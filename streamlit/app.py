@@ -8,7 +8,7 @@ import altair as alt
 # IMPORT DATA
 
 # Pfad zum df angeben
-df_selectedlocations = pd.read_csv("/Users/Lea/Desktop/DataStorytelling/Projekt/df_selectedlocations.csv")
+df_selectedlocations = pd.read_csv("/Users/Lea/Desktop/dst-projekt/df_selectedlocations.csv")
 
 
 ### -------------------###
@@ -45,7 +45,6 @@ st.markdown("Betrachtet werden interne Daten des Jahres **2022** und reicht zur�
 # Map Ansicht, um zu zeigen, woher die Daten kommen -> Neuen df erzeugen mit Längen & Breitengrade für GBR und DEU
 st.markdown("#### Geographische Übersicht: Karte")
 
-#st.map(data=df_selectedlocations, latitude="LOCATION", longitude="" )
 
 # Balkendiagramm (paar Fakten ergänzen!) -> Filter pro Jahr, als interaktivität
 st.markdown("#### Gearbeitete Stunden gemessen an einer normalen 5-Tage Woche à 40h")
