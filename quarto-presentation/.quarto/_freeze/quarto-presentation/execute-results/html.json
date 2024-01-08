@@ -1,0 +1,11 @@
+{
+  "hash": "68b74af421204e159a591dec47da4da0",
+  "result": {
+    "markdown": "---\ntitle: \"quarto-presentation\"\nformat: html\n---\n\n## Quarto\n\n",
+    "supporting": [
+      "quarto-presentation_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

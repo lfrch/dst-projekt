@@ -1,0 +1,38 @@
+---
+title: "Projekt Präsentation"
+subtitle: "Inhalt"
+author: "Lea Frech"
+execute: 
+    eval: true
+lang: de
+format: 
+    revealjs:
+            embed-resources: true
+            code-copy: true
+            code-line-numbers: true
+            scrollable: true
+            slide-number: c
+            incremental: true
+            transition: slide
+            theme: simple
+---
+
+## Slide 1
+
+Thema & Datengrundlage
+
+## Slide 2
+
+Variablen
+
+## Slide 3
+
+Erste Visualisierungen (Auszug aus Datenexplo)
+
+## Slide 4 
+
+Storytelling
+
+## Slide 5
+
+Handlungsempfehlung
