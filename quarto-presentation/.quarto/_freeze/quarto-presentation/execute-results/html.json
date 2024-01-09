@@ -1,7 +1,7 @@
 {
-  "hash": "68b74af421204e159a591dec47da4da0",
+  "hash": "c9c5dd8f9ad11810d64abb20384163ad",
   "result": {
-    "markdown": "---\ntitle: \"quarto-presentation\"\nformat: html\n---\n\n## Quarto\n\n",
+    "markdown": "---\ntitle: \"Projekt Präsentation\"\nsubtitle: \"Inhalt\"\nauthor: \"Lea Frech\"\nexecute: \n    eval: true\nlang: de\nformat: \n    revealjs:\n            embed-resources: true\n            code-copy: true\n            code-line-numbers: true\n            scrollable: true\n            slide-number: c\n            incremental: true\n            transition: slide\n            theme: simple\n---\n\n## 1 - Einleitung Thema\n\nThema: TBD\n\n::: {.nonincremental}\n- Datensatz 1: Hours Worked\n- Datensatz 2: Hours needed to exit poverty\n:::\n\n::: aside\nDatengrundlage: Open Source Data der OECD\n:::\n\n\n## 2 - Relevante Variablen und ihre Bedeutung\n\n| Variable  | Bedeutung  |\n|--------|--------|\n| Location  | Land oder Ländergruppe |\n| Indicator   | Spezielle Kategorien, in denen der Datensatz aufgeschlüsselt ist, hier: der durchschnittliche Lohn  |\n| Subject | Familienstatus der einzelnen Entitäten    |\n| Time | Erhebungsjahr der Daten  |\n| Value | Durchschnittliche Anzahl an Arbeitsstunden  |\n\n: {tbl-colwidths=\"[25,75]\"}\n\n## 3 - Hours Worked\n\nErste Visualisierungen (Auszug aus Datenexplo)\n\n## Slide 4 \n\nStorytelling\n\n## Slide 5\n\nHandlungsempfehlung\n\n",
     "supporting": [
       "quarto-presentation_files"
     ],

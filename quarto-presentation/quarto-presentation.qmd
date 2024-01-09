@@ -17,17 +17,38 @@ format:
             theme: simple
 ---
 
-## Slide 1
+## 1 - Einleitung Thema
 
-Thema & Datengrundlage
+Thema: TBD
 
-## Slide 2
+::: {.nonincremental}
+- Datensatz 1: Hours Worked
+- Datensatz 2: Hours needed to exit poverty
+:::
 
-Variablen
+::: aside
+Datengrundlage: Open Source Data der OECD
+:::
 
-## Slide 3
+
+## 2 - Relevante Variablen und ihre Bedeutung
+
+| Variable  | Bedeutung  |
+|--------|--------|
+| Location  | Land oder Ländergruppe |
+| Indicator   | Spezielle Kategorien, in denen der Datensatz aufgeschlüsselt ist, hier: der durchschnittliche Lohn  |
+| Subject | Familienstatus der einzelnen Entitäten    |
+| Time | Erhebungsjahr der Daten  |
+| Value | Durchschnittliche Anzahl an Arbeitsstunden  |
+
+: {tbl-colwidths="[25,75]"}
+
+## 3 - Hours Worked
 
 Erste Visualisierungen (Auszug aus Datenexplo)
+```{python}
+
+```
 
 ## Slide 4 
 
