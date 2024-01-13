@@ -28,6 +28,8 @@ Thema: TBD
 
 ::: aside
 Datengrundlage: Open Source Data der OECD
+- OECD (2024), Working hours needed to exit poverty (indicator). doi: 10.1787/77505058-en (Accessed on 13 January 2024)
+- OECD (2024), Hours worked (indicator). doi: 10.1787/47be1c78-en (Accessed on 09 January 2024)
 :::
 
 
