@@ -31,7 +31,7 @@ Datengrundlage: Open Source Data der OECD
 :::
 
 
-## 2 - Relevante Variablen und ihre Bedeutung
+## 2 - Übersicht der verwendeten Variablen
 
 | Variable  | Bedeutung  |
 |--------|--------|
@@ -45,8 +45,76 @@ Datengrundlage: Open Source Data der OECD
 
 ## 3 - Hours Worked
 
+```{python}
+import pandas as pd
+import altair as alt
+
+```
+
+```{python}
+#Color Scale
+colors = alt.Scale(
+    range=['#003f5c','#58508d','#bc5090','#ff6361','#ffa600']
+)
+```
+
 Erste Visualisierungen (Auszug aus Datenexplo)
 ```{python}
+
+LINK1 = '/Users/Lea/Desktop/dst-projekt/df_selectedlocations.csv'
+df_selectedlocations = pd.read_csv(LINK1)
+
+#Chart 1 - Set Up
+linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
+    x=alt.X('TIME:O', title='Jahr').axis(
+        titleAnchor='start',
+        labelAngle= -0,
+        ),
+    y=alt.Y('VALUE').scale(domain=(1000,1800), bins=(1000,1200,1400,1600,1800,2000)).axis(
+        title='Anzahl Stunden',
+        titleAnchor='end',
+        grid= False,
+        ),
+    strokeWidth=alt.value(4), 
+    color=alt.Color('LOCATION', scale=colors),
+    tooltip=['LOCATION']
+).properties(
+    title='Hours Worked'
+)
+
+# Chart 1 - Labels
+location_list = df_selectedlocations['LOCATION'].tolist()
+
+linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=3).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}, scale=alt.Scale(domain=(1000,1800))),
+    alt.Text('LOCATION'),
+    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
+).properties(
+    width=800,
+    height=500,    
+)
+
+# Chart 1 - Final Viz
+linechart1_final = alt.layer(linechart1, linechart_labels).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=20,
+    anchor='start',
+    fontWeight='normal',
+    #subtitleColor='grey',
+    #subtitleFontSize=15
+).configure_axis(
+    labelFontSize = 12,
+    titleFontSize = 12,
+    titleFontWeight= 'bold',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+linechart1_final
 
 ```
 
