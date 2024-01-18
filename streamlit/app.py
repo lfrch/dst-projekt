@@ -73,8 +73,8 @@ barchart = alt.Chart(df_selectedlocations).mark_bar().encode(
 st.altair_chart(barchart, use_container_width=True )
 
 
-# Liniendiagramm: Hours worked to exit poverty, im Verlauf der Jahre 2019-22
-st.markdown("#### Benötigte Arbeitsstunden, um nicht in Armut zu leben innerhalb der letzten Jahre")
+# Boxplot: Hours worked to exit poverty, im Verlauf der Jahre 2019-22
+st.markdown("#### Boxplot: Benötigte Arbeitsstunden, um nicht in Armut zu leben innerhalb der letzten Jahre")
 
 # Häufigkeitsverteilung:
 st.markdown("#### Histogramm")
@@ -83,6 +83,92 @@ st.markdown("#### Histogramm")
 st.markdown("#### Scatterplot")
 
 
+# Linechart: Productivity Forecast
+
+df3_selectedlocations = pd.read_csv("/Users/Lea/Desktop/dst-projekt/df3_selectedlocations.csv")
+europe = pd.read_csv("/Users/Lea/Desktop/dst-projekt/europe_forecast.csv")
+
+st.markdown("#### Wie sich die Arbeitsproduktivität in Zukunft entwickeln wird")
+
+# Code für Chart 
+colors_linechart3 = alt.Scale(
+    range=['#ffa600','#ff6361',]
+)
+
+# *************************************************************
+
+linechart3 = alt.Chart(df3_selectedlocations).mark_line().encode(
+    x=alt.X('TIME:O', title='Jahr').axis(
+        titleAnchor='start',
+        labelAngle= -0,
+        ),
+    y=alt.Y('VALUE').scale(domain=(0.85,1.15)).axis(
+        title='GDP per hour worked',
+        titleAnchor='end',
+        grid= False,
+        ),
+    strokeWidth=alt.value(3), 
+    color=alt.Color('LOCATION', scale=colors_linechart3),
+    tooltip=['LOCATION']
+).properties(
+    title='Labor Productivity Forecast'
+)
+
+# *************************************************************
+
+location_list = df3_selectedlocations['LOCATION'].tolist()
+
+linechart3_labels = alt.Chart(df3_selectedlocations).mark_text(align='left', dx=3).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION'),
+    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
+).properties(
+    width=800,
+    height=500,    
+)
+
+# *************************************************************
+
+europe_linechart = alt.Chart(europe).mark_line(strokeDash=[5, 5]).encode(
+    x=alt.X('TIME:O'),
+    y=alt.Y('VALUE'),
+    color=alt.value('black'),
+    strokeWidth=alt.value(3)
+)
+
+europe_list = europe['LOCATION'].tolist()
+
+europe_line_labels = alt.Chart(europe).mark_text(align='left', dx=3).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION:N'),
+    color=alt.value('black')
+).properties(
+    width=800,
+    height=500,    
+)
+
+# *************************************************************
+# Final Viz: linechart 3
+
+linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, europe_line_labels).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=20,
+    anchor='middle',
+    fontWeight='bold',
+).configure_axis(
+    labelFontSize = 11,
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+linechart3_final
 
 ### -------------------###
 # END OF APP
