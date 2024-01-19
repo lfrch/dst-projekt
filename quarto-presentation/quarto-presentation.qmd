@@ -8,32 +8,36 @@ lang: de
 format: 
     revealjs:
             embed-resources: true
+            toc: true
+            toc-expand: 2
             code-copy: true
             code-line-numbers: true
             scrollable: true
-            slide-number: c
             incremental: true
+            slide-number: c
             transition: slide
             theme: simple
 ---
 
-## 1 - Einleitung Thema
+## Einleitung Thema
 
-Thema: TBD
+##### **Thema: Die Arbeitsproduktivität gemessen an der Anzahl der gearbeiteten Stunden und Implikationen auf den Arbeitsmodus hinsichtlich dem Trend zur 4-Tage Woche**
 
 ::: {.nonincremental}
 - Datensatz 1: Hours Worked
 - Datensatz 2: Hours needed to exit poverty
+- Datensatz 3: Labor Productivity Forecast
 :::
 
 ::: aside
 Datengrundlage: Open Source Data der OECD
-- OECD (2024), Working hours needed to exit poverty (indicator). doi: 10.1787/77505058-en (Accessed on 13 January 2024)
-- OECD (2024), Hours worked (indicator). doi: 10.1787/47be1c78-en (Accessed on 09 January 2024)
+- OECD (2024), Working hours needed to exit poverty (indicator). doi: 10.1787/77505058-en
+- OECD (2024), Hours worked (indicator). doi: 10.1787/47be1c78-en
+- OECD (2024), Labour productivity forecast (indicator). doi: 10.1787/cb12b189-en 
 :::
 
 
-## 2 - Übersicht der verwendeten Variablen
+## Übersicht der verwendeten Variablen
 
 | Variable  | Bedeutung  |
 |--------|--------|
@@ -45,7 +49,11 @@ Datengrundlage: Open Source Data der OECD
 
 : {tbl-colwidths="[25,75]"}
 
-## 3 - Hours Worked
+## Hours Worked
+
+Barchart
+linechart?
+Histplot 
 
 ```{python}
 import pandas as pd
@@ -120,12 +128,22 @@ linechart1_final
 
 ```
 
-## Slide 4 
+## Hours needed to exit poverty
+
+Boxplot
+
+## Korrelationen?
+
+Scatterplot
+
+## Ein Blick in die Zukunft
+
+Labor Productivity Forecast
+
+## Implikationen
 
 Storytelling
 
 Ein auffallendes Muster innerhalb der Daten bildet das Jahr 2020 ab. Die Corona Pandemie hat die Wirtschaft auf sämtlichen Ebenen beeinflusst und somit auch die Arbeitsproduktivität  
-
-## Slide 5
 
 Handlungsempfehlung

@@ -1159,22 +1159,36 @@ Lea Frech
 </div>
 </div>
 
+</section><section id="TOC">
+<nav role="doc-toc"> 
+<h2 id="toc-title">Inhaltsverzeichnis</h2>
+<ul>
+<li class="fragment"><a href="#/einleitung-thema" id="/toc-einleitung-thema">Einleitung Thema</a></li>
+<li class="fragment"><a href="#/übersicht-der-verwendeten-variablen" id="/toc-übersicht-der-verwendeten-variablen">Übersicht der verwendeten Variablen</a></li>
+<li class="fragment"><a href="#/hours-worked" id="/toc-hours-worked">Hours Worked</a></li>
+<li class="fragment"><a href="#/hours-needed-to-exit-poverty" id="/toc-hours-needed-to-exit-poverty">Hours needed to exit poverty</a></li>
+<li class="fragment"><a href="#/korrelationen" id="/toc-korrelationen">Korrelationen?</a></li>
+<li class="fragment"><a href="#/ein-blick-in-die-zukunft" id="/toc-ein-blick-in-die-zukunft">Ein Blick in die Zukunft</a></li>
+<li class="fragment"><a href="#/implikationen" id="/toc-implikationen">Implikationen</a></li>
+</ul>
+</nav>
 </section>
 <section id="einleitung-thema" class="slide level2">
-<h2>1 - Einleitung Thema</h2>
-<p>Thema: TBD</p>
+<h2>Einleitung Thema</h2>
+<h5 id="thema-die-arbeitsproduktivität-gemessen-an-der-anzahl-der-gearbeiteten-stunden-und-implikationen-auf-den-arbeitsmodus-hinsichtlich-dem-trend-zur-4-tage-woche"><strong>Thema: Die Arbeitsproduktivität gemessen an der Anzahl der gearbeiteten Stunden und Implikationen auf den Arbeitsmodus hinsichtlich dem Trend zur 4-Tage Woche</strong></h5>
 <div>
 <ul>
 <li>Datensatz 1: Hours Worked</li>
 <li>Datensatz 2: Hours needed to exit poverty</li>
+<li>Datensatz 3: Labor Productivity Forecast</li>
 </ul>
 </div>
 
 <aside><div>
-<p>Datengrundlage: Open Source Data der OECD - OECD (2024), Working hours needed to exit poverty (indicator). doi: 10.1787/77505058-en (Accessed on 13 January 2024) - OECD (2024), Hours worked (indicator). doi: 10.1787/47be1c78-en (Accessed on 09 January 2024)</p>
+<p>Datengrundlage: Open Source Data der OECD - OECD (2024), Working hours needed to exit poverty (indicator). doi: 10.1787/77505058-en - OECD (2024), Hours worked (indicator). doi: 10.1787/47be1c78-en - OECD (2024), Labour productivity forecast (indicator). doi: 10.1787/cb12b189-en</p>
 </div></aside></section>
 <section id="übersicht-der-verwendeten-variablen" class="slide level2">
-<h2>2 - Übersicht der verwendeten Variablen</h2>
+<h2>Übersicht der verwendeten Variablen</h2>
 <table>
 <colgroup>
 <col style="width: 25%">
@@ -1211,28 +1225,29 @@ Lea Frech
 </table>
 </section>
 <section id="hours-worked" class="slide level2">
-<h2>3 - Hours Worked</h2>
+<h2>Hours Worked</h2>
+<p>Barchart linechart? Histplot</p>
 <p>Erste Visualisierungen (Auszug aus Datenexplo)</p>
 <div class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="42">
 
 <style>
-#altair-viz-f6697403f0c846408ffcc163e73b6a58.vega-embed {
+#altair-viz-33119c3db56b436797d04ddd1d7f8dc5.vega-embed {
 width: 100%;
 display: flex;
 }
-#altair-viz-f6697403f0c846408ffcc163e73b6a58.vega-embed details,
-#altair-viz-f6697403f0c846408ffcc163e73b6a58.vega-embed details summary {
+#altair-viz-33119c3db56b436797d04ddd1d7f8dc5.vega-embed details,
+#altair-viz-33119c3db56b436797d04ddd1d7f8dc5.vega-embed details summary {
 position: relative;
 }
 </style>
-<div id="altair-viz-f6697403f0c846408ffcc163e73b6a58"></div>
+<div id="altair-viz-33119c3db56b436797d04ddd1d7f8dc5"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-f6697403f0c846408ffcc163e73b6a58") {
-      outputDiv = document.getElementById("altair-viz-f6697403f0c846408ffcc163e73b6a58");
+    if (outputDiv.id !== "altair-viz-33119c3db56b436797d04ddd1d7f8dc5") {
+      outputDiv = document.getElementById("altair-viz-33119c3db56b436797d04ddd1d7f8dc5");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
@@ -1283,12 +1298,22 @@ position: relative;
 </div>
 </div>
 </section>
-<section id="slide-4" class="slide level2">
-<h2>Slide 4</h2>
-<p>Storytelling</p>
+<section id="hours-needed-to-exit-poverty" class="slide level2">
+<h2>Hours needed to exit poverty</h2>
+<p>Boxplot</p>
 </section>
-<section id="slide-5" class="slide level2">
-<h2>Slide 5</h2>
+<section id="korrelationen" class="slide level2">
+<h2>Korrelationen?</h2>
+<p>Scatterplot</p>
+</section>
+<section id="ein-blick-in-die-zukunft" class="slide level2">
+<h2>Ein Blick in die Zukunft</h2>
+<p>Labor Productivity Forecast</p>
+</section>
+<section id="implikationen" class="slide level2">
+<h2>Implikationen</h2>
+<p>Storytelling</p>
+<p>Ein auffallendes Muster innerhalb der Daten bildet das Jahr 2020 ab. Die Corona Pandemie hat die Wirtschaft auf sämtlichen Ebenen beeinflusst und somit auch die Arbeitsproduktivität</p>
 <p>Handlungsempfehlung</p>
 <div class="footer footer-default">
 
