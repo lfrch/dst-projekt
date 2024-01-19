@@ -30,7 +30,29 @@ st.write("Präsentiert von Lea Frech")
 # -------------------#
 # SIDEBAR
 
-st.sidebar.title("Übersicht zu relevanten Fakten rund um die Arbeitsproduktivität")
+
+#Datenübersicht
+st.sidebar.title("Übersicht zu den genutzen Daten")
+st.sidebar.markdown('''
+| Variable  | Bedeutung  |
+|--------|--------|
+| Location  | Land oder Ländergruppe |
+| Indicator   | Spezielle Kategorien, in denen der Datensatz aufgeschlüsselt ist, hier: der durchschnittliche Lohn  |
+| Subject | Familienstatus der einzelnen Entitäten    |
+| Time | Erhebungsjahr der Daten  |
+| Value | Durchschnittliche Anzahl an Arbeitsstunden  |''')
+
+
+
+#Keypoints
+st.sidebar.markdown("\n")
+st.sidebar.markdown("### Fakten rund um das Thema Arbeitsproduktivität")
+st.sidebar.markdown("*Stichwort1")
+st.sidebar.markdown("*Stichwort2")
+st.sidebar.markdown("*Stichwort3")
+st.sidebar.markdown("*Stichwort4")
+st.sidebar.markdown("*Stichwort5")
+
 
 
 # -------------------#
@@ -44,8 +66,24 @@ colors = alt.Scale(
 st.markdown("## Die Arbeitsproduktivität unseres Unternehmens im Vergleich zu anderen Ländern") 
 st.markdown('Betrachtet werden interne Daten des Jahres :orange[**2022**] und reicht zurück bis in das Jahr :blue[**2019**].')
 
-# Map Ansicht, um zu zeigen, woher die Daten kommen -> Neuen df erzeugen mit Längen & Breitengrade für GBR und DEU
-st.markdown("#### Geographische Übersicht: Karte")
+st.markdown("### Die Daten")
+#Liste zum Filtern 
+YEARS = df_selectedlocations['TIME'].to_list()
+YEAR_SELECTED = st.multiselect('Jahr zur Darstellung auswählen',YEARS)
+
+# Filter
+filtered_df = df_selectedlocations[df_selectedlocations['TIME'].isin(YEAR_SELECTED)]
+st.write('Jahr',YEAR_SELECTED,'ausgewählt')
+
+# Gefilterter Dataframe
+if YEAR_SELECTED:
+    filtered_df=df_selectedlocations[df_selectedlocations['TIME'].isin(YEAR_SELECTED)]
+else: 
+    filtered_df = df_selectedlocations
+
+# Show filtered DataFrame
+st.dataframe(filtered_df)
+
 
 
 # *********************Balkendiagramm *****************************
