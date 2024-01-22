@@ -32,6 +32,26 @@ st.write("Präsentiert von Lea Frech")
 # -------------------#
 # SIDEBAR
 
+# Tab in Sidebar
+st.sidebar.markdown("\n")
+tab1, tab2 = st.sidebar.tabs(["Fakten", "Definitionen"])
+
+# Tab 1
+tab1.markdown('''Hier findest du Fakten: 
+              *Stichwort1''')
+st.sidebar.markdown("\n")
+st.sidebar.markdown("*Stichwort1")
+st.sidebar.markdown("*Stichwort2")
+st.sidebar.markdown("*Stichwort3")
+st.sidebar.markdown("*Stichwort4")
+st.sidebar.markdown("*Stichwort5")
+
+# Tab 2
+tab2.write("Hier findest du Definitionen")
+st.sidebar.markdown("\n")
+st.sidebar.markdown("*Stichwort1")
+st.sidebar.markdown("*Stichwort2")
+
 
 #Datenübersicht
 st.sidebar.title("Übersicht der Daten")
@@ -43,18 +63,6 @@ st.sidebar.markdown('''
 | Subject | Familienstatus der einzelnen Entitäten    |
 | Time | Erhebungsjahr der Daten  |
 | Value | Anzahl an Arbeitsstunden, z.T. kumuliert  |''')
-
-
-
-#Keypoints
-st.sidebar.markdown("\n")
-st.sidebar.markdown("### Fakten rund um das Thema Arbeitsproduktivität")
-st.sidebar.markdown("*Stichwort1")
-st.sidebar.markdown("*Stichwort2")
-st.sidebar.markdown("*Stichwort3")
-st.sidebar.markdown("*Stichwort4")
-st.sidebar.markdown("*Stichwort5")
-
 
 
 # -------------------#
