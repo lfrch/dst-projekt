@@ -3,6 +3,8 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
+import streamlit as st
+import streamlit as st
 
 # -------------------#
 # IMPORT DATA
@@ -18,7 +20,7 @@ df_selectedlocations = pd.read_csv("/Users/Lea/Desktop/dst-projekt/df_selectedlo
 # HEADER
 
 # Title of our app
-st.title("Data Storytelling Projekt: Dashboard")
+st.markdown('''# :bar_chart: Dashboard''')
 
 # Add image
 st.image('unsplash_header.jpg')
@@ -32,7 +34,7 @@ st.write("Präsentiert von Lea Frech")
 
 
 #Datenübersicht
-st.sidebar.title("Übersicht zu den genutzen Daten")
+st.sidebar.title("Übersicht der Daten")
 st.sidebar.markdown('''
 | Variable  | Bedeutung  |
 |--------|--------|
@@ -40,7 +42,7 @@ st.sidebar.markdown('''
 | Indicator   | Spezielle Kategorien, in denen der Datensatz aufgeschlüsselt ist, hier: der durchschnittliche Lohn  |
 | Subject | Familienstatus der einzelnen Entitäten    |
 | Time | Erhebungsjahr der Daten  |
-| Value | Durchschnittliche Anzahl an Arbeitsstunden  |''')
+| Value | Anzahl an Arbeitsstunden, z.T. kumuliert  |''')
 
 
 
@@ -64,11 +66,11 @@ colors = alt.Scale(
 )
 
 st.markdown("## Die Arbeitsproduktivität unseres Unternehmens im Vergleich zu anderen Ländern") 
-st.markdown('Betrachtet werden interne Daten des Jahres :orange[**2022**] und reicht zurück bis in das Jahr :blue[**2019**].')
-
-st.markdown("### Die Daten")
-st.write("ggf. gejointer Dataframe hier anzeigen lassen?") # je nach Filter für Charts, muss auch nicht ausgegeben werden?
-
+st.markdown('Betrachtet werden interne Daten des Jahres :orange[**2022**] und reichen zurück bis in das Jahr :blue[**2019**].')
+st.markdown('Betrachtete Länder und Regionen:')
+st.markdown('''*:de: Deutschland* ''')
+st.markdown('''*:uk: Großbritannien*''')
+st.markdown('''*:flag-eu: Europa*''')
 
 # *********************Balkendiagramm *****************************
 
@@ -76,7 +78,7 @@ st.markdown("#### Gearbeitete Stunden gemessen an einer normalen 5-Tage Woche à
 
 #Liste zum Filtern 
 YEARS = df_selectedlocations.groupby('TIME')['LOCATION'].apply(list).to_dict()
-YEAR_SELECTED = st.multiselect('Jahr zur Darstellung auswählen:', list(YEARS.keys()))
+YEAR_SELECTED = st.multiselect('Wähle ein Jahr zur Visualisierung aus:', list(YEARS.keys()))
 
 # Filter
 filtered_df = df_selectedlocations[df_selectedlocations['LOCATION'].isin(YEAR_SELECTED)]
@@ -137,9 +139,6 @@ barchart_final = alt.layer(barchart_base,barchart_labels).configure_view(
 # Show filtered Chart
 st.altair_chart(barchart_final, use_container_width=True)
 
-# *********** Histplot *******************
-
-st.markdown("#### Histogramm")
 st.markdown("""---""")
 
 
@@ -224,7 +223,7 @@ points = base.mark_point(filled=True, size=200).encode(
 
 histogram2 = base.mark_bar(opacity=0.7, thickness=100).encode(
     alt.X('VALUE', title="Stundenanzahl")
-        .bin(step=5), # step keeps bin size the same
+        .bin(step=5), 
     alt.Y('count()', title="Häufigkeit")
         .stack(None)
         .scale(domain=[0,15])
@@ -256,13 +255,29 @@ colors_linechart3 = alt.Scale(
     range=['#ffa600','#ff6361',]
 )
 
-linechart3 = alt.Chart(df3_selectedlocations).mark_line().encode(
+#Code Slider 
+#Liste zum Filtern 
+LOCATIONS = df3_selectedlocations.groupby('LOCATION')['TIME'].apply(list).to_dict()
+LOCATIONS_SELECTED = st.multiselect('Wähle eine Region zur Visualisierung aus:', list(LOCATIONS.keys()))
+
+# Filter
+filtered_df3 = df3_selectedlocations[df3_selectedlocations['TIME'].isin(LOCATIONS_SELECTED)]
+
+# Gefilterter Dataframe
+if LOCATIONS_SELECTED:
+    filtered_df3 = df3_selectedlocations[df3_selectedlocations['LOCATION'].isin(LOCATIONS_SELECTED)]
+else:
+    filtered_df3 = df3_selectedlocations
+
+
+# Code Linechart
+linechart3 = alt.Chart(filtered_df3).mark_line().encode(
     x=alt.X('TIME:O', title='Jahr').axis(
         titleAnchor='start',
         labelAngle= -0,
         labelColor='black',
         ),
-    y=alt.Y('VALUE').scale(domain=(0.85,1.15)).axis(
+    y=alt.Y('VALUE').scale(domain=(0.86,1.10)).axis(
         title='BIP pro gearbeitete Stunde',
         titleAnchor='end',
         grid= False,
@@ -277,9 +292,9 @@ linechart3 = alt.Chart(df3_selectedlocations).mark_line().encode(
 
 # *************************************************************
 
-location_list = df3_selectedlocations['LOCATION'].tolist()
+location_list = filtered_df3['LOCATION'].tolist()
 
-linechart3_labels = alt.Chart(df3_selectedlocations).mark_text(align='left', dx=3).encode(
+linechart3_labels = alt.Chart(filtered_df3).mark_text(align='left', dx=3).encode(
     alt.X('TIME:O', aggregate='max'),
     alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
     alt.Text('LOCATION'),
@@ -288,6 +303,22 @@ linechart3_labels = alt.Chart(df3_selectedlocations).mark_text(align='left', dx=
     width=800,
     height=500,    
 )
+
+
+# *************************************************************
+
+location_list = filtered_df3['LOCATION'].tolist()
+
+linechart3_labels = alt.Chart(filtered_df3).mark_text(align='left', dx=3).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION'),
+    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list, type='ordinal')),
+).properties(
+    width=800,
+    height=500,
+)
+
 
 # *************************************************************
 
@@ -329,10 +360,33 @@ linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, eu
     fontSize = 12
 )
 
-linechart3_final
+st.altair_chart(linechart3_final, use_container_width=True)
 
 st.write("Peak & Low erklären + Ausblick -> farblich hervorheben")
-st.markdown("""---""")
+
+# Metrics 
+st.subheader("Relevante Kennzahlen")
+
+# Create two columns for displaying metrics
+col1, col2, col3, col4= st.columns(4)
+
+# Calculate the mean of the 'VALUE' column in df3_selectedlocations
+mean_value = df3_selectedlocations['VALUE'].mean()
+col1.metric(label='Durchschnittliches BIP', value=round(mean_value, 2))
+
+# Calculate the maximum value in the 'VALUE' column of df3_selectedlocations
+max_value = df3_selectedlocations['VALUE'].max()
+col2.metric(label='Maximum', value=round(max_value, 2))
+
+# Calculate the minimum value in the 'VALUE' column of df3_selectedlocations
+min_value = df3_selectedlocations['VALUE'].min()
+col3.metric(label='Minimum', value=round(min_value, 2))
+
+# ...
+
+### -------------------###
+# END OF APP
+
 
 ### -------------------###
 # END OF APP
