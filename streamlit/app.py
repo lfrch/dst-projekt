@@ -69,33 +69,26 @@ st.markdown('Betrachtet werden interne Daten des Jahres :orange[**2022**] und re
 st.markdown("### Die Daten")
 st.write("ggf. gejointer Dataframe hier anzeigen lassen?") # je nach Filter für Charts, muss auch nicht ausgegeben werden?
 
-#Liste zum Filtern 
-YEARS = df_selectedlocations['TIME'].to_list()
-YEAR_SELECTED = st.multiselect('Jahr zur Darstellung auswählen',YEARS)
-
-# Filter
-filtered_df = df_selectedlocations[df_selectedlocations['TIME'].isin(YEAR_SELECTED)]
-st.write('Jahr',YEAR_SELECTED,'ausgewählt')
-
-# Gefilterter Dataframe
-if YEAR_SELECTED:
-    filtered_df=df_selectedlocations[df_selectedlocations['TIME'].isin(YEAR_SELECTED)]
-else: 
-    filtered_df = df_selectedlocations
-    # hier chart einbauen?
-
-# Show filtered DataFrame
-st.dataframe(filtered_df)
-
-
 
 # *********************Balkendiagramm *****************************
-#paar Fakten ergänzen! -> Filter pro Jahr, als interaktivität
 
 st.markdown("#### Gearbeitete Stunden gemessen an einer normalen 5-Tage Woche à 40h")
 
-#Code für Balkendiagramm
-barchart1 = alt.Chart(df_selectedlocations).mark_bar().encode(
+#Liste zum Filtern 
+YEARS = df_selectedlocations.groupby('TIME')['LOCATION'].apply(list).to_dict()
+YEAR_SELECTED = st.multiselect('Jahr zur Darstellung auswählen:', list(YEARS.keys()))
+
+# Filter
+filtered_df = df_selectedlocations[df_selectedlocations['LOCATION'].isin(YEAR_SELECTED)]
+
+# Gefilterter Dataframe
+if YEAR_SELECTED:
+    filtered_df = df_selectedlocations[df_selectedlocations['TIME'].isin(YEAR_SELECTED)]
+else:
+    filtered_df = df_selectedlocations
+
+# Code Barchart filtered
+barchart_base = alt.Chart(filtered_df).mark_bar().encode(
     x=alt.X('VALUE', scale=alt.Scale(bins=[0,1000,2000,3000,4000,5000,6000,7000])).axis(
         title='Anzahl Stunden',
         titleAnchor='start',
@@ -120,12 +113,12 @@ barchart1 = alt.Chart(df_selectedlocations).mark_bar().encode(
     )
 )
 
-barchart1_labels = alt.Chart(df_selectedlocations).mark_text(baseline='middle', color='black').encode(
+barchart_labels = alt.Chart(filtered_df).mark_text(baseline='middle', color='black').encode(
     x=alt.X('VALUE'),
     y=alt.Y('LOCATION')  
 )
 
-barchart1_final = alt.layer(barchart1,barchart1_labels).configure_view(
+barchart_final = alt.layer(barchart_base,barchart_labels).configure_view(
     strokeWidth=0
 ).configure_title(
     fontSize=25,
@@ -141,9 +134,8 @@ barchart1_final = alt.layer(barchart1,barchart1_labels).configure_view(
     fontSize = 12
 )
 
-barchart1_final
-
-st.write('Hier Filter einbauen?')
+# Show filtered Chart
+st.altair_chart(barchart_final, use_container_width=True)
 
 # *********** Histplot *******************
 
@@ -230,7 +222,7 @@ points = base.mark_point(filled=True, size=200).encode(
         scale=color_scale),
 )
 
-histogram2 = base.mark_bar(opacity=0.5, thickness=100).encode(
+histogram2 = base.mark_bar(opacity=0.7, thickness=100).encode(
     alt.X('VALUE', title="Stundenanzahl")
         .bin(step=5), # step keeps bin size the same
     alt.Y('count()', title="Häufigkeit")
