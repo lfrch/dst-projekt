@@ -67,6 +67,8 @@ st.markdown("## Die Arbeitsproduktivität unseres Unternehmens im Vergleich zu a
 st.markdown('Betrachtet werden interne Daten des Jahres :orange[**2022**] und reicht zurück bis in das Jahr :blue[**2019**].')
 
 st.markdown("### Die Daten")
+st.write("ggf. gejointer Dataframe hier anzeigen lassen?") # je nach Filter für Charts, muss auch nicht ausgegeben werden?
+
 #Liste zum Filtern 
 YEARS = df_selectedlocations['TIME'].to_list()
 YEAR_SELECTED = st.multiselect('Jahr zur Darstellung auswählen',YEARS)
@@ -80,6 +82,7 @@ if YEAR_SELECTED:
     filtered_df=df_selectedlocations[df_selectedlocations['TIME'].isin(YEAR_SELECTED)]
 else: 
     filtered_df = df_selectedlocations
+    # hier chart einbauen?
 
 # Show filtered DataFrame
 st.dataframe(filtered_df)
@@ -141,13 +144,16 @@ barchart1_final = alt.layer(barchart1,barchart1_labels).configure_view(
 barchart1_final
 
 st.write('Hier Filter einbauen?')
+
+# *********** Histplot *******************
+
+st.markdown("#### Histogramm")
 st.markdown("""---""")
 
 
 # ***********Boxplot: Hours worked to exit poverty, im Verlauf der Jahre 2019-22*******************
 
-st.markdown("#### Boxplot: Benötigte Arbeitsstunden, um nicht in Armut zu leben innerhalb der letzten Jahre")
-st.markdown("""---""")
+st.markdown("#### Benötigte Arbeitsstunden, um nicht in Armut zu leben")
 
 df2_selectedlocations = pd.read_csv("/Users/Lea/Desktop/dst-projekt/df2_selectedlocations.csv")
 
@@ -197,11 +203,46 @@ boxplot_final = alt.layer(boxplot).configure_view(
 
 boxplot_final
 
-st.markdown("""---""")
+st.write("Auswertung noch und und farblich hervorheben + Linechart als Erweiterung, Column Darstellung?")
 
-# *********** Histplot *******************
+# ***********Histogramm kombinierte Darstellung*******************
 
-st.markdown("#### Histogramm")
+selector = alt.selection_point(fields=['SUBJECT'])
+
+color_scale = alt.Scale(domain=['2 CHILDREN', 'NO CHILDREN'],
+                        range=['#58508d','#ff6361'])
+
+base = alt.Chart(df2_selectedlocations).properties(
+    width=250,
+    height=250
+).add_params(selector)
+
+points = base.mark_point(filled=True, size=200).encode(
+    x=alt.X('TIME:O').axis(
+        title="Jahr",
+        labelAngle=0),
+    y=alt.Y('mean(VALUE):Q', axis=alt.Axis(title='Mean Value', format='.1f'))
+        .scale(domain=[8,16]),
+    color=alt.condition(
+        selector,
+        'SUBJECT:N',
+        alt.value('lightgray'),
+        scale=color_scale),
+)
+
+histogram2 = base.mark_bar(opacity=0.5, thickness=100).encode(
+    alt.X('VALUE', title="Stundenanzahl")
+        .bin(step=5), # step keeps bin size the same
+    alt.Y('count()', title="Häufigkeit")
+        .stack(None)
+        .scale(domain=[0,15])
+        ,
+    alt.Color('SUBJECT:N').scale(color_scale)
+).transform_filter(
+    selector
+)
+
+points | histogram2
 st.markdown("""---""")
 
 
@@ -230,7 +271,7 @@ linechart3 = alt.Chart(df3_selectedlocations).mark_line().encode(
         labelColor='black',
         ),
     y=alt.Y('VALUE').scale(domain=(0.85,1.15)).axis(
-        title='GDP per hour worked',
+        title='BIP pro gearbeitete Stunde',
         titleAnchor='end',
         grid= False,
         labelColor='black',
@@ -298,6 +339,7 @@ linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, eu
 
 linechart3_final
 
+st.write("Peak & Low erklären + Ausblick -> farblich hervorheben")
 st.markdown("""---""")
 
 ### -------------------###
