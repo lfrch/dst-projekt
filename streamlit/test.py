@@ -3,6 +3,8 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
+import streamlit as st
+import streamlit as st
 
 # -------------------#
 # IMPORT DATA
@@ -85,8 +87,41 @@ europe_line_labels = alt.Chart(europe).mark_text(align='left', dx=3).encode(
 )
 
 # *************************************************************
-# Final Viz: linechart 3
 
+location_list = filtered_df3['LOCATION'].tolist()
+
+linechart3_labels = alt.Chart(filtered_df3).mark_text(align='left', dx=3).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION'),
+    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
+).properties(
+    width=800,
+    height=500,    
+)
+
+# *************************************************************
+
+europe_linechart = alt.Chart(europe).mark_line(strokeDash=[5, 5]).encode(
+    x=alt.X('TIME:O'),
+    y=alt.Y('VALUE'),
+    color=alt.value('black'),
+    strokeWidth=alt.value(3)
+)
+
+europe_list = europe['LOCATION'].tolist()
+
+europe_line_labels = alt.Chart(europe).mark_text(align='left', dx=3).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION:N'),
+    color=alt.value('black')
+).properties(
+    width=800,
+    height=500,    
+)
+
+# Final Viz: linechart 3
 linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, europe_line_labels).configure_view(
     strokeWidth=0
 ).configure_title(
@@ -103,7 +138,46 @@ linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, eu
     fontSize = 12
 )
 
-linechart3_final
+# Add mean line
+
+mean_line = alt.Chart(filtered_df3).mark_rule(color='lightgrey', strokeDash=[5,5]).encode(
+        y='mean(VALUE)'
+    )
+
+mean_line_label= alt.Chart(filtered_df3).mark_text(align='left', dx=5, text='Mean VALUE').encode(
+        alt.X('TIME:O', aggregate='max'),
+        alt.Y('mean(VALUE):Q'),
+        color=alt.value('lightgrey')
+    )
+
+
+# -----------------Final Viz ----------------------------
+    
+MEAN_LINE_SELECTED = st.checkbox("Linie für Mittleres BIP einblenden")
+if MEAN_LINE_SELECTED:
+    linechart3_final_with_mean = alt.layer(linechart3, linechart3_labels, europe_linechart, europe_line_labels, mean_line, mean_line_label).configure_view(
+        strokeWidth=0
+    ).configure_title(
+        fontSize=25,
+        anchor='middle',
+        fontWeight='bold',
+    ).configure_axis(
+        labelFontSize = 11,
+        titleFontSize = 12,
+        titleFontWeight= 'normal',
+        titleColor='grey'
+    ).configure_text(
+        fontWeight='bold',
+        fontSize = 12
+    )
+
+    linechart3_final_with_mean
+else:
+    linechart3_final
+
+
+
+
 
 # ---------------------------------------------
 # Add slider with user input

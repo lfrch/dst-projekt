@@ -32,29 +32,30 @@ st.write("Präsentiert von Lea Frech")
 # -------------------#
 # SIDEBAR
 
+st.sidebar.title("Über die Daten")
+
 # Tab in Sidebar
 st.sidebar.markdown("\n")
 tab1, tab2 = st.sidebar.tabs(["Fakten", "Definitionen"])
 
-# Tab 1
-tab1.markdown('''Hier findest du Fakten: 
-              *Stichwort1''')
-st.sidebar.markdown("\n")
-st.sidebar.markdown("*Stichwort1")
-st.sidebar.markdown("*Stichwort2")
-st.sidebar.markdown("*Stichwort3")
-st.sidebar.markdown("*Stichwort4")
-st.sidebar.markdown("*Stichwort5")
+# Tab 1: Fakten
+with tab1:
+    st.markdown('''* Stichwort 1''')
+    st.markdown('''* Stichwort 2''')
+    st.markdown('''* Stichwort 3''')
 
-# Tab 2
-tab2.write("Hier findest du Definitionen")
-st.sidebar.markdown("\n")
-st.sidebar.markdown("*Stichwort1")
-st.sidebar.markdown("*Stichwort2")
 
+# Tab 2: Definitionen
+with tab2:
+    st.markdown(''' Die **durchschnittliche Jahresarbeitszeit** ist definiert als die **Gesamtzahl der tatsächlich geleisteten Arbeitsstunden pro Jahr geteilt durch die durchschnittliche Zahl der Erwerbstätigen pro Jahr**. Die tatsächlich geleisteten Arbeitsstunden umfassen die reguläre Arbeitszeit von Vollzeit-, Teilzeit- und geringfügig beschäftigten Arbeitnehmern, bezahlte und unbezahlte Überstunden und schließen die Zeit aus, die aufgrund von Feiertagen, bezahltem Jahresurlaub, eigener Krankheitnund sonstigen anderen Gründen nicht geleistet wurde.''')
+    st.markdown("\n")
+    st.markdown('''Die **Arbeitsproduktivität** ist definiert als **reales Bruttoinlandsprodukt (BIP)** pro Arbeitsstunde. Dies erfasst den Einsatz des Arbeitsinputs besser als der Output pro Arbeitnehmer, wobei der Arbeitsinput als die Gesamtheit der von allen beteiligten Personen geleisteten Arbeitsstunden definiert ist.''')
+    
+
+st.sidebar.markdown("\n")
 
 #Datenübersicht
-st.sidebar.title("Übersicht der Daten")
+
 st.sidebar.markdown('''
 | Variable  | Bedeutung  |
 |--------|--------|
@@ -74,11 +75,12 @@ colors = alt.Scale(
 )
 
 st.markdown("## Die Arbeitsproduktivität unseres Unternehmens im Vergleich zu anderen Ländern") 
-st.markdown('Betrachtet werden interne Daten des Jahres :orange[**2022**] und reichen zurück bis in das Jahr :blue[**2019**].')
-st.markdown('Betrachtete Länder und Regionen:')
+st.markdown('##### Betrachtet werden interne Daten des Jahres :orange[**2022**] und reichen zurück bis in das Jahr :blue[**2019**].')
+st.markdown('##### Betrachtete Länder und Regionen:')
 st.markdown('''*:de: Deutschland* ''')
 st.markdown('''*:uk: Großbritannien*''')
-st.markdown('''*:flag-eu: Europa*''')
+st.markdown('''*:flag-eu: Europa zum Ländervergleich*''')
+st.markdown("""---""")
 
 # *********************Balkendiagramm *****************************
 
@@ -86,7 +88,7 @@ st.markdown("#### Gearbeitete Stunden gemessen an einer normalen 5-Tage Woche à
 
 #Liste zum Filtern 
 YEARS = df_selectedlocations.groupby('TIME')['LOCATION'].apply(list).to_dict()
-YEAR_SELECTED = st.multiselect('Wähle ein Jahr zur Visualisierung aus:', list(YEARS.keys()))
+YEAR_SELECTED = st.multiselect('Nach Jahren filtern:', list(YEARS.keys()))
 
 # Filter
 filtered_df = df_selectedlocations[df_selectedlocations['LOCATION'].isin(YEAR_SELECTED)]
@@ -100,7 +102,7 @@ else:
 # Code Barchart filtered
 barchart_base = alt.Chart(filtered_df).mark_bar().encode(
     x=alt.X('VALUE', scale=alt.Scale(bins=[0,1000,2000,3000,4000,5000,6000,7000])).axis(
-        title='Anzahl Stunden',
+        title='Stunden',
         titleAnchor='start',
         grid=False,
         labelColor='black',
@@ -147,6 +149,8 @@ barchart_final = alt.layer(barchart_base,barchart_labels).configure_view(
 # Show filtered Chart
 st.altair_chart(barchart_final, use_container_width=True)
 
+# Quintessenz
+st.write("hier Auswertung: kurz und bündig, farbig hervorgehoben")
 st.markdown("""---""")
 
 
@@ -168,7 +172,7 @@ boxplot = alt.Chart(df2_selectedlocations).mark_boxplot(size=80, extent=0.5).enc
         grid=False,
         labelColor='black',
         tickColor='grey'),
-    y=alt.Y('VALUE:Q', scale=alt.Scale(bins=[0,2,4,6,8,10,12,14,16,18],domain=(0,20))).axis(
+    y=alt.Y('VALUE:Q', title='Stundenanzahl', scale=alt.Scale(bins=[0,2,4,6,8,10,12,14,16,18],domain=(0,20))).axis(
         titleAnchor='start',
         grid=False,
         labelColor='black',
@@ -193,7 +197,7 @@ boxplot_final = alt.layer(boxplot).configure_view(
     labelFontSize = 11,
     labelFontWeight='bold',
     titleFontSize = 12,
-    titleFontWeight= 'normal',
+    titleFontWeight= 'bold',
     titleColor='grey'
 ).configure_text(
     fontWeight='bold',
@@ -201,8 +205,6 @@ boxplot_final = alt.layer(boxplot).configure_view(
 )
 
 boxplot_final
-
-st.write("Auswertung noch und und farblich hervorheben + Linechart als Erweiterung, Column Darstellung?")
 
 # ***********Histogramm kombinierte Darstellung*******************
 
@@ -242,6 +244,9 @@ histogram2 = base.mark_bar(opacity=0.7, thickness=100).encode(
 )
 
 points | histogram2
+
+# Quintessenz
+st.write("hier Auswertung: kurz und bündig, farbig hervorgehoben")
 st.markdown("""---""")
 
 
@@ -266,7 +271,7 @@ colors_linechart3 = alt.Scale(
 #Code Slider 
 #Liste zum Filtern 
 LOCATIONS = df3_selectedlocations.groupby('LOCATION')['TIME'].apply(list).to_dict()
-LOCATIONS_SELECTED = st.multiselect('Wähle eine Region zur Visualisierung aus:', list(LOCATIONS.keys()))
+LOCATIONS_SELECTED = st.multiselect('Nach Region filtern:', list(LOCATIONS.keys()))
 
 # Filter
 filtered_df3 = df3_selectedlocations[df3_selectedlocations['TIME'].isin(LOCATIONS_SELECTED)]
@@ -350,7 +355,21 @@ europe_line_labels = alt.Chart(europe).mark_text(align='left', dx=3).encode(
 )
 
 # *************************************************************
-# Final Viz: linechart 3
+
+#Add mean line
+
+mean_line = alt.Chart(filtered_df3).mark_rule(color='grey', strokeDash=[5,5]).encode(
+        y='mean(VALUE)'
+    )
+
+mean_line_label= alt.Chart(filtered_df3).mark_text(align='left', dx=5, text='Mean GDP').encode(
+        alt.X('TIME:O', aggregate='max'),
+        alt.Y('mean(VALUE):Q'),
+        color=alt.value('grey')
+    )
+
+
+# ----------------- Final Viz: linechart 3 ----------------------------
 
 linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, europe_line_labels).configure_view(
     strokeWidth=0
@@ -368,7 +387,28 @@ linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, eu
     fontSize = 12
 )
 
-st.altair_chart(linechart3_final, use_container_width=True)
+MEAN_LINE_SELECTED = st.checkbox("Linie für Mittleres BIP einblenden")
+if MEAN_LINE_SELECTED:
+    linechart3_final_with_mean = alt.layer(linechart3, linechart3_labels, europe_linechart, europe_line_labels, mean_line, mean_line_label).configure_view(
+        strokeWidth=0
+    ).configure_title(
+        fontSize=25,
+        anchor='middle',
+        fontWeight='bold',
+    ).configure_axis(
+        labelFontSize = 11,
+        titleFontSize = 12,
+        titleFontWeight= 'normal',
+        titleColor='grey'
+    ).configure_text(
+        fontWeight='bold',
+        fontSize = 12
+    )
+
+    linechart3_final_with_mean
+else:
+    linechart3_final
+
 
 st.write("Peak & Low erklären + Ausblick -> farblich hervorheben")
 
@@ -389,6 +429,9 @@ col2.metric(label='Maximum', value=round(max_value, 2))
 # Calculate the minimum value in the 'VALUE' column of df3_selectedlocations
 min_value = df3_selectedlocations['VALUE'].min()
 col3.metric(label='Minimum', value=round(min_value, 2))
+
+# Quintessenz
+col4 = st.write("hier Auswertung: kurz und bündig, farbig hervorgehoben")
 
 # ...
 
