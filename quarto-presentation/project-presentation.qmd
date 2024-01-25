@@ -1,0 +1,452 @@
+---
+title: "Projekt Präsentation"
+subtitle: "Inhalt"
+author: "Lea Frech"
+execute: 
+    eval: true
+lang: de
+format: 
+    revealjs:
+            embed-resources: true
+            toc: true
+            toc-expand: 2
+            code-copy: true
+            code-line-numbers: true
+            scrollable: true
+            incremental: true
+            slide-number: c
+            transition: slide
+            theme: default
+---
+
+## Slide Title {background-color="blavk" background-image="/Users/Lea/Desktop/dst-projekt/quarto-presentation/andreas-klassen-gZB-i-dA6ns-unsplash.jpg"}
+
+## Einleitung Thema
+
+ggf. Corportate Design / Logo kreieren?
+
+:::: {.columns}
+
+::: {.column width="50%"}
+***Thema***: Die Arbeitsproduktivität gemessen an der Anzahl der gearbeiteten Stunden und Implikationen auf den Arbeitsmodus hinsichtlich dem Trend zur 4-Tage Woche
+:::
+
+::: {.column width="50%"}
+***Vorhaben/ Aspekt***:, den es zu untersuchen gilt für schließliche Handlungsempfehlung
+:::
+
+::::
+
+## Hours Worked
+
+
+```{python}
+import pandas as pd
+import altair as alt
+
+```
+
+```{python}
+#Color Scale
+colors = alt.Scale(
+    range=['#003f5c','#58508d','#bc5090','#ff6361','#ffa600']
+)
+```
+
+```{python}
+# Import Data for Hours Worked
+LINK1 = '/Users/Lea/Desktop/dst-projekt/df_selectedlocations.csv'
+df_selectedlocations = pd.read_csv(LINK1)
+```
+
+::: {.columns}
+
+::: {.column width="70%"}
+
+```{python}
+#Barchart
+
+barchart1 = alt.Chart(df_selectedlocations).mark_bar().encode(
+    x=alt.X('VALUE', scale=alt.Scale(bins=[0,1000,2000,3000,4000,5000,6000,7000])).axis(
+        title='Anzahl Stunden',
+        titleAnchor='start',
+        grid=False,
+        labelColor='black',
+        tickColor='grey'),
+    y=alt.Y('LOCATION').axis(
+        title='Standort',
+        titleAnchor='middle',
+        titleAngle=-90,
+        labelAngle= 0,
+        grid=False,
+        labelColor='black',
+        tickColor='black'),
+    color=alt.Color('TIME:O', scale=colors),
+).properties(
+    width=600,
+    height=400,
+    title=alt.Title(
+        "Hours worked",
+    )
+)
+
+barchart1_labels = alt.Chart(df_selectedlocations).mark_text(baseline='middle', color='black').encode(
+    x=alt.X('VALUE'),
+    y=alt.Y('LOCATION')  
+)
+
+
+
+barchart1_final = alt.layer(barchart1,barchart1_labels).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=20,
+    anchor='middle',
+    fontWeight='bold',
+).configure_axis(
+    labelFontSize = 11,
+    labelFontWeight='bold',
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+barchart1_final
+
+```
+
+:::
+
+::: {.column width="30%"}
+Auffallend ist hier, dass ....
+:::
+
+::::
+
+## Hours Worked im Detail
+
+Vergleichend dazu die gerarbeiteten Stunden im Linienverlauf.
+OECD als Vergleich, repräsentiert weitestgehend die Summe der Länder.
+
+::: {.incremental}
+- markantes Low in 2020
+- stetige Zunahme der Stundenanzahl bildet wirtschaftlichen Erholung nach der Pandemie ab
+:::
+
+inkrementelles Erscheinen der Kurven UK & GER noch einbauen?
+
+```{python}
+#Linechart
+linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
+    x=alt.X('TIME:O', title='Jahr').axis(
+        titleAnchor='start',
+        labelAngle= -0,
+        ),
+    y=alt.Y('VALUE').scale(domain=(1000,1800), bins=(1000,1300,1600,1900,2100)).axis(
+        title='Anzahl Stunden',
+        titleAnchor='end',
+        grid= False,
+        ),
+    strokeWidth=alt.value(4), 
+    color=alt.Color('LOCATION', scale=colors),
+    tooltip=['LOCATION']
+).properties(
+    title='Hours Worked'
+)
+
+# Chart 1 - Labels
+location_list = df_selectedlocations['LOCATION'].tolist()
+
+linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=3).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}, scale=alt.Scale(domain=(1000,1800))),
+    alt.Text('LOCATION'),
+    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
+).properties(
+    width=800,
+    height=500,    
+)
+
+# Chart 1 - Final Viz
+linechart1_final = alt.layer(linechart1, linechart_labels).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=25,
+    anchor='start',
+    fontWeight='bold',
+    #subtitleColor='grey',
+    #subtitleFontSize=15
+).configure_axis(
+    labelFontSize = 11,
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+linechart1_final
+
+```
+
+## Die Stundenanzahl unserer Standorte
+
+- Werte von UK!
+- Werte von GER!
+
+## Hours needed to exit poverty
+
+::: {.columns}
+
+::: {.column width="70%"}
+
+```{python}
+# Import Data for Hours Worked
+LINK2 = '/Users/Lea/Desktop/dst-projekt/df2_selectedlocations.csv'
+df2_selectedlocations = pd.read_csv(LINK2)
+```
+
+```{python}
+# Code Scale for Exit Poverty
+colors2 = alt.Scale(
+    range=['#58508d','#ff6361','#ffa600']
+)
+colors2
+
+# Histplot & Scatter
+
+boxplot = alt.Chart(df2_selectedlocations).mark_boxplot(size=50, extent=0.5).encode(
+    x=alt.X('SUBJECT').axis(
+        title=None,
+        labelAngle=0,
+        grid=False,
+        labelColor='black',
+        tickColor='grey'),
+    y=alt.Y('VALUE:Q', scale=alt.Scale(bins=[0,2,4,6,8,10,12,14,16,18],domain=(0,20))).axis(
+        titleAnchor='start',
+        grid=False,
+        labelColor='black',
+        tickColor='black'),
+    color=alt.Color('SUBJECT', scale=colors2, legend=None),
+).properties(
+    width=600,
+    height=400,
+    title=alt.Title(
+        "Hours needed to exit poverty",
+        subtitle="in relation to family status",
+    )
+)
+
+boxplot_final = alt.layer(boxplot).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=20,
+    anchor='middle',
+    fontWeight='bold',
+).configure_axis(
+    labelFontSize = 11,
+    labelFontWeight='bold',
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+boxplot_final
+
+
+```
+
+:::
+
+::: {.column width="30%"}
+Auffallend ist hier, dass ....
+:::
+
+::::
+
+
+## Der Zusammenhang
+
+Scatterplot!
+
+## Ein Blick in die Zukunft
+
+:::: {.columns}
+
+::: {.column width="50%"}
+So hat sich das Bruttoinlandsprodukt, das zur Messung der Arbeitsproduktivität herangezogen wurde, in den letzten zwei Jahrzehnten in Europa entwickelt und wird sich vermutlich in Zukunft entwickeln.
+:::
+
+::: {.column width="50%"}
+Dies erfasst den Einsatz des Arbeitsinputs besser als der Output pro Arbeitnehmer, wobei der Arbeitsinput als die Gesamtheit der von allen beteiligten Personen geleisteten Arbeitsstunden definiert ist.
+:::
+
+::::
+
+
+
+```{python}
+#Import Datasets
+LINK3 = '/Users/Lea/Desktop/dst-projekt/df3_selectedlocations.csv'
+df3_selectedlocations = pd.read_csv(LINK3)
+
+LINK4 = '/Users/Lea/Desktop/dst-projekt/europe_forecast.csv'
+europe = pd.read_csv(LINK4)
+
+#Linechart
+
+europe_linechart = alt.Chart(europe).mark_line(strokeDash=[5, 5]).encode(
+    x=alt.X('TIME:O', title='Jahr').axis(
+        titleAnchor='start',
+        labelAngle= -0,
+        ),
+    y=alt.Y('VALUE').scale(domain=(0.85,1.08)).axis(
+        title='GDP per hour worked',
+        titleAnchor='end',
+        grid= False,
+        ),
+    strokeWidth=alt.value(3),
+    color=alt.value('black'),
+)
+
+europe_list = europe['LOCATION'].tolist()
+
+europe_line_labels = alt.Chart(europe).mark_text(align='left', dx=3).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION:N'),
+    color=alt.value('black')
+).properties(
+    width=800,
+    height=500   
+)
+
+europe_linechart_final = alt.layer( europe_linechart, europe_line_labels).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=20,
+    anchor='middle',
+    fontWeight='bold',
+).configure_axis(
+    labelFontSize = 12,
+    titleFontSize = 14,
+    titleFontWeight= 'bold',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 14
+)
+
+europe_linechart_final
+
+```
+
+---
+
+So entwickelt sich das BIP in den Ländern unserer Firmenstandorte
+
+```{python}
+colors_linechart3 = alt.Scale(
+    range=['#ffa600','#ff6361',]
+)
+
+linechart3 = alt.Chart(df3_selectedlocations).mark_line().encode(
+    x=alt.X('TIME:O', title='Jahr').axis(
+        titleAnchor='start',
+        labelAngle= -0,
+        ),
+    y=alt.Y('VALUE').scale(domain=(0.85,1.08)).axis(
+        title='GDP per hour worked',
+        titleAnchor='end',
+        grid= False,
+        ),
+    strokeWidth=alt.value(3), 
+    color=alt.Color('LOCATION', scale=colors_linechart3),
+    tooltip=['LOCATION']
+)
+
+location_list = df3_selectedlocations['LOCATION'].tolist()
+
+linechart3_labels = alt.Chart(df3_selectedlocations).mark_text(align='left', dx=3).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION'),
+    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
+).properties(
+    width=800,
+    height=500,    
+)
+
+linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, europe_line_labels).configure_view(
+    strokeWidth=0,
+).configure_axis(
+    labelFontSize = 12,
+    titleFontSize = 14,
+    titleFontWeight= 'bold',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 14
+)
+
+linechart3_final
+
+```
+
+Labor Productivity Forecast
+Linechart einfügen!
+
+---
+
+Ein auffallendes Muster innerhalb der Daten bildet das Jahr 2020 ab. Die Corona Pandemie hat die Wirtschaft auf sämtlichen Ebenen beeinflusst und somit auch die Arbeitsproduktivität.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+:::{.nonincremental}
+- Aufschwung seither
+- Momentaufnahme: Erholung des konjunkturarmen Jahr 2023
+- Es gilt: Mitarbeitende an das Unternehmen binden
+- New Work Konzepte werden gefragter und relevanter 
+:::
+
+:::
+
+::: {.column width="50%"}
+
+:::{.nonincremental}
+- Kompromisse eingehen: 4 Tage Woche sehr starke Maßnahme, um diese Brücke zwischen Arbeitsproduktivität und Work-Life-Balance zu gehen
+- usw. Recap der Fakten und analysierten Daten
+:::
+
+:::
+
+::::
+
+
+
+## Handlungsempfehlung: Methoden
+
+::: {.incremental}
+- Hours worked: Ausgangssituation, : Wo stehen wir?, 
+- Hours needed to exit poverty repräsentiert die Untergrenze: wichtig sind unsere Mitarbeiter
+- Productivity Forecast: Trends und wirtschaftliche Tendenz, Wie verhält sich die Welt?, Wagen wir eine Umstellung des Arbeitsmodus? Was sind Risiken
+
+##### Empfehlung
+
+Auf Basis des Daten und deren Auswertung schlage ich folgendes vor:
+Wie kann Vorhaben/Hypothese umgesetzt werden?
+
+:::
+
+## Danke für Ihre Aufmerksamkeit!
+
+Für Fragen und Amerkungen gerne jederzeit auf mich zukommen
