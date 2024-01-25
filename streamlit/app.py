@@ -40,10 +40,10 @@ tab1, tab2 = st.sidebar.tabs(["Fakten", "Definitionen"])
 
 # Tab 1: Fakten
 with tab1:
-    st.markdown('''* Stichwort 1''')
-    st.markdown('''* Stichwort 2''')
-    st.markdown('''* Stichwort 3''')
-
+    st.markdown('''* Unsere Vollzeitbeschäftigten erreichen bei einer **5-Tages-Arbeitswoche** eine Anzahl von 40 Stunden''')
+    st.markdown('''* Ein Geschäftsjahr hat ca. **220 Werktage** exkl. der gesetzlichen Feiertagen und individuellem Urlaubsanspruch''')
+    st.markdown('''* Vollzeitbeschäftigte kommen damit also auf **ca. 1.760h pro Jahr**''')
+    st.markdown('''* :red[Bei einer **4-Tages-Woche** wären es dagegen **1.464h im Jahr**]''')
 
 # Tab 2: Definitionen
 with tab2:
@@ -55,13 +55,13 @@ with tab2:
 st.sidebar.markdown("\n")
 
 #Datenübersicht
+st.sidebar.markdown(" ### Verwendete Variablen im Datensatz und ihre Bedeutung:")
 
 st.sidebar.markdown('''
 | Variable  | Bedeutung  |
 |--------|--------|
 | Location  | Land oder Ländergruppe |
-| Indicator   | Spezielle Kategorien, in denen der Datensatz aufgeschlüsselt ist, hier: der durchschnittliche Lohn  |
-| Subject | Familienstatus der einzelnen Entitäten    |
+| Subject | Familienstatus der Entitäten    |
 | Time | Erhebungsjahr der Daten  |
 | Value | Anzahl an Arbeitsstunden, z.T. kumuliert  |''')
 
@@ -80,6 +80,10 @@ st.markdown('##### Betrachtete Länder und Regionen:')
 st.markdown('''*:de: Deutschland* ''')
 st.markdown('''*:uk: Großbritannien*''')
 st.markdown('''*:flag-eu: Europa zum Ländervergleich*''')
+
+
+# Intro: Instructions
+st.markdown("##### Was kann man hier tun? -> Instructions für Zielgruppe")
 st.markdown("""---""")
 
 # *********************Balkendiagramm *****************************
@@ -150,7 +154,7 @@ barchart_final = alt.layer(barchart_base,barchart_labels).configure_view(
 st.altair_chart(barchart_final, use_container_width=True)
 
 # Quintessenz
-st.write("hier Auswertung: kurz und bündig, farbig hervorgehoben")
+st.write("hier Verhältnis, was kann man hier sehen: kurz und bündig, farbig hervorgehoben")
 st.markdown("""---""")
 
 
@@ -161,7 +165,7 @@ st.markdown("#### Benötigte Arbeitsstunden, um nicht in Armut zu leben")
 df2_selectedlocations = pd.read_csv("/Users/Lea/Desktop/dst-projekt/df2_selectedlocations.csv")
 
 colors2 = alt.Scale(
-    range=['#58508d','#ff6361','#ffa600']
+    range=['#003f5c','#bc5090']
 )
 
 #Code Boxplot
@@ -211,7 +215,7 @@ boxplot_final
 selector = alt.selection_point(fields=['SUBJECT'])
 
 color_scale = alt.Scale(domain=['2 CHILDREN', 'NO CHILDREN'],
-                        range=['#58508d','#ff6361'])
+                        range=['#003f5c','#bc5090'])
 
 base = alt.Chart(df2_selectedlocations).properties(
     width=250,

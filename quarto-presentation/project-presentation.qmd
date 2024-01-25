@@ -9,7 +9,7 @@ format:
     revealjs:
             embed-resources: true
             toc: true
-            toc-expand: 2
+            toc-title: Agenda
             code-copy: true
             code-line-numbers: true
             scrollable: true
@@ -36,6 +36,12 @@ ggf. Corportate Design / Logo kreieren?
 :::
 
 ::::
+
+## Unser Firmen interner Arbeitsmodus
+
+- Unsere Vollzeitbeschäftigten erreichen bei einer 5 Tage Arbeitswoche eine Anzahl von 40 Stunden
+- Ein Geschäftsjahr hat ca. 220 Werktage exkl. der gesetzlichen Feiertagen und individuellem Urlaubsanspruch
+- Vollzeitbeschäftigte kommen damit also auf ca. 1760h pro Jahr
 
 ## Hours Worked
 
@@ -126,10 +132,24 @@ Auffallend ist hier, dass ....
 
 ::::
 
-## Hours Worked im Detail
+## Hours Worked im Detail {.unnumbered .unlisted}
 
 Vergleichend dazu die gerarbeiteten Stunden im Linienverlauf.
 OECD als Vergleich, repräsentiert weitestgehend die Summe der Länder.
+
+
+<div style="color:grey">
+OECD & Europa Daten zum Vergleich hinzugezogen
+</div>
+
+<div style="color:#ff6361">
+UK Daten: X Anzahl
+</div>
+
+<div style="color:#ffa600">
+UK Daten: X Anzahl
+</div>
+
 
 ::: {.incremental}
 - markantes Low in 2020
@@ -139,6 +159,10 @@ OECD als Vergleich, repräsentiert weitestgehend die Summe der Länder.
 inkrementelles Erscheinen der Kurven UK & GER noch einbauen?
 
 ```{python}
+
+colors_linechart1 = alt.Scale(
+    range=['#ffa600','#ff6361','grey','grey']
+)
 #Linechart
 linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
     x=alt.X('TIME:O', title='Jahr').axis(
@@ -151,10 +175,8 @@ linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
         grid= False,
         ),
     strokeWidth=alt.value(4), 
-    color=alt.Color('LOCATION', scale=colors),
+    color=alt.Color('LOCATION', scale=colors_linechart1),
     tooltip=['LOCATION']
-).properties(
-    title='Hours Worked'
 )
 
 # Chart 1 - Labels
@@ -162,7 +184,7 @@ location_list = df_selectedlocations['LOCATION'].tolist()
 
 linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=3).encode(
     alt.X('TIME:O', aggregate='max'),
-    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}, scale=alt.Scale(domain=(1000,1800))),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
     alt.Text('LOCATION'),
     alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
 ).properties(
@@ -193,7 +215,7 @@ linechart1_final
 
 ```
 
-## Die Stundenanzahl unserer Standorte
+## Die Stundenanzahl unserer Standorte {.unnumbered .unlisted}
 
 - Werte von UK!
 - Werte von GER!
@@ -213,11 +235,8 @@ df2_selectedlocations = pd.read_csv(LINK2)
 ```{python}
 # Code Scale for Exit Poverty
 colors2 = alt.Scale(
-    range=['#58508d','#ff6361','#ffa600']
+    range=['#003f5c','#bc5090']
 )
-colors2
-
-# Histplot & Scatter
 
 boxplot = alt.Chart(df2_selectedlocations).mark_boxplot(size=50, extent=0.5).encode(
     x=alt.X('SUBJECT').axis(
@@ -313,7 +332,7 @@ europe_linechart = alt.Chart(europe).mark_line(strokeDash=[5, 5]).encode(
         grid= False,
         ),
     strokeWidth=alt.value(3),
-    color=alt.value('black'),
+    color=alt.value('grey'),
 )
 
 europe_list = europe['LOCATION'].tolist()
@@ -322,7 +341,7 @@ europe_line_labels = alt.Chart(europe).mark_text(align='left', dx=3).encode(
     alt.X('TIME:O', aggregate='max'),
     alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
     alt.Text('LOCATION:N'),
-    color=alt.value('black')
+    color=alt.value('grey')
 ).properties(
     width=800,
     height=500   
@@ -403,7 +422,8 @@ linechart3_final
 Labor Productivity Forecast
 Linechart einfügen!
 
----
+--- 
+
 
 Ein auffallendes Muster innerhalb der Daten bildet das Jahr 2020 ab. Die Corona Pandemie hat die Wirtschaft auf sämtlichen Ebenen beeinflusst und somit auch die Arbeitsproduktivität.
 
@@ -447,6 +467,6 @@ Wie kann Vorhaben/Hypothese umgesetzt werden?
 
 :::
 
-## Danke für Ihre Aufmerksamkeit!
+## Danke für Ihre Aufmerksamkeit! {.unnumbered .unlisted}
 
 Für Fragen und Amerkungen gerne jederzeit auf mich zukommen
