@@ -39,6 +39,7 @@ ggf. Corportate Design / Logo kreieren?
 
 ## Unser Firmen interner Arbeitsmodus
 
+**In Slides als Action Title einbauen!**
 - Unsere Vollzeitbeschäftigten erreichen bei einer 5 Tage Arbeitswoche eine Anzahl von 40 Stunden
 - Ein Geschäftsjahr hat ca. 220 Werktage exkl. der gesetzlichen Feiertagen und individuellem Urlaubsanspruch
 - Vollzeitbeschäftigte kommen damit also auf ca. 1760h pro Jahr
@@ -169,7 +170,7 @@ linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
         titleAnchor='start',
         labelAngle= -0,
         ),
-    y=alt.Y('VALUE').scale(domain=(1000,1800), bins=(1000,1300,1600,1900,2100)).axis(
+    y=alt.Y('VALUE').scale(domain=(1000,2000), bins=(1000,1300,1600,1900,2100)).axis(
         title='Anzahl Stunden',
         titleAnchor='end',
         grid= False,
@@ -182,7 +183,7 @@ linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
 # Chart 1 - Labels
 location_list = df_selectedlocations['LOCATION'].tolist()
 
-linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=3).encode(
+linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=5, fontSize=14).encode(
     alt.X('TIME:O', aggregate='max'),
     alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
     alt.Text('LOCATION'),
@@ -192,8 +193,16 @@ linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=3)
     height=500,    
 )
 
+# Markers
+linechart_points = alt.Chart(df_selectedlocations[df_selectedlocations['LOCATION'].isin(['United Kingdom', 'Germany'])]).mark_point(size=70, filled=True, opacity=1).encode(
+    x=alt.X('TIME:O', title='Year'),
+    y=alt.Y('VALUE', title='Number of Hours'),
+    color=alt.Color('LOCATION', scale=colors),
+    tooltip=['LOCATION']
+)
+
 # Chart 1 - Final Viz
-linechart1_final = alt.layer(linechart1, linechart_labels).configure_view(
+linechart1_final = alt.layer(linechart1, linechart_labels,linechart_points).configure_view(
     strokeWidth=0
 ).configure_title(
     fontSize=25,
@@ -215,10 +224,87 @@ linechart1_final
 
 ```
 
-## Die Stundenanzahl unserer Standorte {.unnumbered .unlisted}
+## Die Stundenanzahl unserer Standorte
 
-- Werte von UK!
-- Werte von GER!
+```{python}
+
+colors_linechart1 = alt.Scale(
+    range=['#ffa600','#ff6361','grey','grey']
+)
+#Linechart
+linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
+    x=alt.X('TIME:O', title='Jahr').axis(
+        titleAnchor='start',
+        labelAngle= -0,
+        ),
+    y=alt.Y('VALUE').scale(domain=(1000,2000), bins=(1000,1300,1600,1900,2100)).axis(
+        title='Anzahl Stunden',
+        titleAnchor='end',
+        grid= False,
+        ),
+    strokeWidth=alt.value(4), 
+    color=alt.Color('LOCATION', scale=colors_linechart1),
+    tooltip=['LOCATION']
+)
+
+# Chart 1 - Labels
+location_list = df_selectedlocations['LOCATION'].tolist()
+
+linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=5, fontSize=14).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION'),
+    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
+).properties(
+    width=800,
+    height=500,    
+)
+
+# Markers
+linechart_points = alt.Chart(df_selectedlocations).mark_point(size=70, filled=True, opacity=1).encode(
+    x=alt.X('TIME:O', title='Year'),
+    y=alt.Y('VALUE', title='Number of Hours'),
+    color=alt.Color('LOCATION', scale=colors),
+    tooltip=['LOCATION']
+)
+
+#Data Labels 
+linechart_datalabels = alt.Chart(df_selectedlocations[(df_selectedlocations['LOCATION'].isin(['United Kingdom', 'Germany'])) & (df_selectedlocations['TIME'] == 2020)]).mark_text(
+    align='left',
+    dx=5,
+    dy=10,
+    fontSize=14,
+).encode(
+    x=alt.X('TIME:O'),
+    y=alt.Y('VALUE'),
+    text= ('VALUE'),
+    color=alt.Color('LOCATION', scale=colors)
+)
+
+
+
+# Chart 1 - Final Viz
+linechart1_final = alt.layer(linechart1, linechart_labels,linechart_points, linechart_datalabels).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=25,
+    anchor='start',
+    fontWeight='bold',
+    #subtitleColor='grey',
+    #subtitleFontSize=15
+).configure_axis(
+    labelFontSize = 11,
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+linechart1_final
+
+```
 
 ## Hours needed to exit poverty
 
