@@ -1,6 +1,6 @@
 ---
-title: "Projekt Präsentation"
-subtitle: "Inhalt"
+title: "Exkurs Arbeitsproduktivität "
+subtitle: "Entscheidungsfindung auf der Grundlage von Unternehmensdaten der Firma X"
 author: "Lea Frech"
 execute: 
     eval: true
@@ -19,33 +19,36 @@ format:
             theme: default
 ---
 
-## Slide Title {background-color="blavk" background-image="/Users/Lea/Desktop/dst-projekt/quarto-presentation/andreas-klassen-gZB-i-dA6ns-unsplash.jpg"}
+## Firma X - Fakten & Status Quo
 
-## Einleitung Thema
+Seit 5 Jahren gibt es unseren Firmenstandort in Deutschland.
+Hierfür ein paar Eckdaten zur aktuellen Lage:
 
-ggf. Corportate Design / Logo kreieren?
+- Unser Hauptstandort in UK testet aktuell das New-Work-Konzept der 4-Tages-Woche
+- Seit Eröffnung des zweiten Standorts in Deutschland, gilt es interne Daten zu beleuchten und - auch vergleichend zu den Kollegen in UK, bestehende Arbeitsmodi zu hinterfragen und ggf. zu testen
+- **Ausblick: Wo stehen wir aktuell?**
+
+## Exkurs zum aktuellen Arbeitsmodus
+Die Arbeitsproduktivität wird in folgendem an der jährlich Anzahl der gearbeiteten Stunden gemessen. Hierfür stellt auch das Bruttoinlandsprodukt ein wesentlicher KPI dar.
 
 :::: {.columns}
 
-::: {.column width="50%"}
-***Thema***: Die Arbeitsproduktivität gemessen an der Anzahl der gearbeiteten Stunden und Implikationen auf den Arbeitsmodus hinsichtlich dem Trend zur 4-Tage Woche
+::: {.column width="60%"}
+- aktuelle **5-Tages-Arbeitswoche**: 40h Arbeitszeit pro Woche
+- ein Geschäftsjahr bringt **52 Arbeitswochen**, also **210 Werktage** exkl. Feiertage und individuellem Urlaubsanspruch
 :::
 
-::: {.column width="50%"}
-***Vorhaben/ Aspekt***:, den es zu untersuchen gilt für schließliche Handlungsempfehlung
+::: {.column width="40%"}
+- Vollzeitbeschäftigte kommen damit also auf **ca. 1.680h pro Jahr**
+
 :::
 
 ::::
 
-## Unser Firmen interner Arbeitsmodus
+**Zu untersuchen: Status Quo; Implikationen auf den Arbeitsmodus hinsichtlich dem Trend zur 4-Tage Woche**
 
-**In Slides als Action Title einbauen!**
-- Unsere Vollzeitbeschäftigten erreichen bei einer 5 Tage Arbeitswoche eine Anzahl von 40 Stunden
-- Ein Geschäftsjahr hat ca. 220 Werktage exkl. der gesetzlichen Feiertagen und individuellem Urlaubsanspruch
-- Vollzeitbeschäftigte kommen damit also auf ca. 1760h pro Jahr
 
-## Hours Worked
-
+## Summierte Stundenzahl der letzten Jahre
 
 ```{python}
 import pandas as pd
@@ -66,9 +69,15 @@ LINK1 = '/Users/Lea/Desktop/dst-projekt/df_selectedlocations.csv'
 df_selectedlocations = pd.read_csv(LINK1)
 ```
 
-::: {.columns}
+:::: {.columns}
 
-::: {.column width="70%"}
+::: {.column width="40%"}
+**Betrachteter Zeitraum:**<text style="color:#003f5c"> **2019**</text> - <text style="color:#ff6361">**2022**</text><br><br>
+Im Verhältnis stehen unsere beiden Firmenstandorte mit der OECD, ein zur Gesamtheit der Länder repräsentativer Zusammenschluss und der EU 
+
+:::
+
+::: {.column width="60%"}
 
 ```{python}
 #Barchart
@@ -90,7 +99,7 @@ barchart1 = alt.Chart(df_selectedlocations).mark_bar().encode(
         tickColor='black'),
     color=alt.Color('TIME:O', scale=colors),
 ).properties(
-    width=600,
+    width=400,
     height=400,
     title=alt.Title(
         "Hours worked",
@@ -127,110 +136,19 @@ barchart1_final
 
 :::
 
-::: {.column width="30%"}
-Auffallend ist hier, dass ....
-:::
-
 ::::
 
-## Hours Worked im Detail {.unnumbered .unlisted}
+---
 
-Vergleichend dazu die gerarbeiteten Stunden im Linienverlauf.
-OECD als Vergleich, repräsentiert weitestgehend die Summe der Länder.
+<text>**2020:**</text><text style="color:#ff6361"> **wirtschaftlicher Tiefpunkt**</text><br>
 
-
-<div style="color:grey">
-OECD & Europa Daten zum Vergleich hinzugezogen
-</div>
-
-<div style="color:#ff6361">
-UK Daten: X Anzahl
-</div>
-
-<div style="color:#ffa600">
-UK Daten: X Anzahl
-</div>
-
-
-::: {.incremental}
-- markantes Low in 2020
-- stetige Zunahme der Stundenanzahl bildet wirtschaftlichen Erholung nach der Pandemie ab
-:::
-
-inkrementelles Erscheinen der Kurven UK & GER noch einbauen?
 
 ```{python}
 
 colors_linechart1 = alt.Scale(
     range=['#ffa600','#ff6361','grey','grey']
 )
-#Linechart
-linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
-    x=alt.X('TIME:O', title='Jahr').axis(
-        titleAnchor='start',
-        labelAngle= -0,
-        ),
-    y=alt.Y('VALUE').scale(domain=(1000,2000), bins=(1000,1300,1600,1900,2100)).axis(
-        title='Anzahl Stunden',
-        titleAnchor='end',
-        grid= False,
-        ),
-    strokeWidth=alt.value(4), 
-    color=alt.Color('LOCATION', scale=colors_linechart1),
-    tooltip=['LOCATION']
-)
 
-# Chart 1 - Labels
-location_list = df_selectedlocations['LOCATION'].tolist()
-
-linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=5, fontSize=14).encode(
-    alt.X('TIME:O', aggregate='max'),
-    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
-    alt.Text('LOCATION'),
-    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
-).properties(
-    width=800,
-    height=500,    
-)
-
-# Markers
-linechart_points = alt.Chart(df_selectedlocations[df_selectedlocations['LOCATION'].isin(['United Kingdom', 'Germany'])]).mark_point(size=70, filled=True, opacity=1).encode(
-    x=alt.X('TIME:O', title='Year'),
-    y=alt.Y('VALUE', title='Number of Hours'),
-    color=alt.Color('LOCATION', scale=colors),
-    tooltip=['LOCATION']
-)
-
-# Chart 1 - Final Viz
-linechart1_final = alt.layer(linechart1, linechart_labels,linechart_points).configure_view(
-    strokeWidth=0
-).configure_title(
-    fontSize=25,
-    anchor='start',
-    fontWeight='bold',
-    #subtitleColor='grey',
-    #subtitleFontSize=15
-).configure_axis(
-    labelFontSize = 11,
-    titleFontSize = 12,
-    titleFontWeight= 'normal',
-    titleColor='grey'
-).configure_text(
-    fontWeight='bold',
-    fontSize = 12
-)
-
-linechart1_final
-
-```
-
-## Die Stundenanzahl unserer Standorte
-
-```{python}
-
-colors_linechart1 = alt.Scale(
-    range=['#ffa600','#ff6361','grey','grey']
-)
 #Linechart
 linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
     x=alt.X('TIME:O', title='Jahr').axis(
@@ -262,9 +180,9 @@ linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=5,
 
 # Markers
 linechart_points = alt.Chart(df_selectedlocations).mark_point(size=70, filled=True, opacity=1).encode(
-    x=alt.X('TIME:O', title='Year'),
-    y=alt.Y('VALUE', title='Number of Hours'),
-    color=alt.Color('LOCATION', scale=colors),
+    x=alt.X('TIME:O'),
+    y=alt.Y('VALUE'),
+    color=alt.Color('LOCATION', scale=colors_linechart1),
     tooltip=['LOCATION']
 )
 
@@ -278,7 +196,7 @@ linechart_datalabels = alt.Chart(df_selectedlocations[(df_selectedlocations['LOC
     x=alt.X('TIME:O'),
     y=alt.Y('VALUE'),
     text= ('VALUE'),
-    color=alt.Color('LOCATION', scale=colors)
+    color=alt.Color('LOCATION', scale=colors_linechart1)
 )
 
 
@@ -290,8 +208,6 @@ linechart1_final = alt.layer(linechart1, linechart_labels,linechart_points, line
     fontSize=25,
     anchor='start',
     fontWeight='bold',
-    #subtitleColor='grey',
-    #subtitleFontSize=15
 ).configure_axis(
     labelFontSize = 11,
     titleFontSize = 12,
@@ -306,11 +222,97 @@ linechart1_final
 
 ```
 
-## Hours needed to exit poverty
+## 2022: Steigerung auf X Stunden
+
+```{python}
+#Linechart
+linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
+    x=alt.X('TIME:O', title='Jahr').axis(
+        titleAnchor='start',
+        labelAngle= -0,
+        ),
+    y=alt.Y('VALUE').scale(domain=(1000,2000), bins=(1000,1300,1600,1900,2100)).axis(
+        title='Anzahl Stunden',
+        titleAnchor='end',
+        grid= False,
+        ),
+    strokeWidth=alt.value(4), 
+    color=alt.Color('LOCATION', scale=colors_linechart1),
+    tooltip=['LOCATION']
+)
+
+# Chart 1 - Labels
+location_list = df_selectedlocations['LOCATION'].tolist()
+
+linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=5, fontSize=14).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION'),
+    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
+).properties(
+    width=800,
+    height=500,    
+)
+
+# Markers
+linechart_points = alt.Chart(df_selectedlocations).mark_point(size=70, filled=True, opacity=1).encode(
+    x=alt.X('TIME:O'),
+    y=alt.Y('VALUE'),
+    color=alt.Color('LOCATION', scale=colors_linechart1),
+    tooltip=['LOCATION']
+)
+
+#Data Labels 
+linechart_datalabels = alt.Chart(df_selectedlocations[(df_selectedlocations['LOCATION'].isin(['United Kingdom', 'Germany'])) & (df_selectedlocations['TIME'] == 2022)]).mark_text(
+    align='left',
+    dx=-8,
+    dy=20,
+    fontSize=14,
+).encode(
+    x=alt.X('TIME:O'),
+    y=alt.Y('VALUE'),
+    text= ('VALUE'),
+    color=alt.Color('LOCATION', scale=colors_linechart1)
+)
+
+
+
+# Chart 1 - Final Viz
+linechart2_final = alt.layer(linechart1, linechart_labels,linechart_points, linechart_datalabels).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=25,
+    anchor='start',
+    fontWeight='bold',
+).configure_axis(
+    labelFontSize = 11,
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+linechart2_final
+
+```
+
+## Wie steht es um die Mitarbeitenden?
+<text>hier: Untergrenze der benötigten Arbeitsstunden</text>
+
+::::
 
 ::: {.columns}
 
-::: {.column width="70%"}
+::: {.column width="40%"}
+<text style="color:#003f5c">**10,6 Stunden,d.h. weniger als 600 Stunden p.a.**</text><br><br>
+<text style="color:#bc5090">**12,6 Stunden, d.h. weniger als 700 Stunden p.a. **</text><br>
+<br><text>Auffallend ist hier, dass ....<text>
+
+:::
+
+::: {.column width="60%"}
 
 ```{python}
 # Import Data for Hours Worked
@@ -338,7 +340,7 @@ boxplot = alt.Chart(df2_selectedlocations).mark_boxplot(size=50, extent=0.5).enc
         tickColor='black'),
     color=alt.Color('SUBJECT', scale=colors2, legend=None),
 ).properties(
-    width=600,
+    width=450,
     height=400,
     title=alt.Title(
         "Hours needed to exit poverty",
@@ -370,32 +372,17 @@ boxplot_final
 
 :::
 
-::: {.column width="30%"}
-Auffallend ist hier, dass ....
-:::
-
 ::::
 
 
-## Der Zusammenhang
+## Was bedeutet das in unserem Firmenkontext?
 
 Scatterplot!
 
+
 ## Ein Blick in die Zukunft
 
-:::: {.columns}
-
-::: {.column width="50%"}
-So hat sich das Bruttoinlandsprodukt, das zur Messung der Arbeitsproduktivität herangezogen wurde, in den letzten zwei Jahrzehnten in Europa entwickelt und wird sich vermutlich in Zukunft entwickeln.
-:::
-
-::: {.column width="50%"}
-Dies erfasst den Einsatz des Arbeitsinputs besser als der Output pro Arbeitnehmer, wobei der Arbeitsinput als die Gesamtheit der von allen beteiligten Personen geleisteten Arbeitsstunden definiert ist.
-:::
-
-::::
-
-
+<text style="color:grey">Entwicklung des Bruttoinlandprodukts</text>
 
 ```{python}
 #Import Datasets
@@ -429,8 +416,8 @@ europe_line_labels = alt.Chart(europe).mark_text(align='left', dx=3).encode(
     alt.Text('LOCATION:N'),
     color=alt.value('grey')
 ).properties(
-    width=800,
-    height=500   
+    width=600,
+    height=400   
 )
 
 europe_linechart_final = alt.layer( europe_linechart, europe_line_labels).configure_view(
@@ -455,11 +442,23 @@ europe_linechart_final
 
 ---
 
-So entwickelt sich das BIP in den Ländern unserer Firmenstandorte
+## Ein Blick in die Zukunft: BIP relevanter Standorte
+
+
+:::: {.columns}
+
+::: {.column width="20%"}
+
+<text style="color:#ff6361">**GDP von X**</text><br>
+<text style="color:#ffa600">**GDP von X**</text>
+
+:::
+
+::: {.column width="80%"}
 
 ```{python}
 colors_linechart3 = alt.Scale(
-    range=['#ffa600','#ff6361',]
+    range=['#ffa600','#ff6361']
 )
 
 linechart3 = alt.Chart(df3_selectedlocations).mark_line().encode(
@@ -485,8 +484,8 @@ linechart3_labels = alt.Chart(df3_selectedlocations).mark_text(align='left', dx=
     alt.Text('LOCATION'),
     alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
 ).properties(
-    width=800,
-    height=500,    
+    width=600,
+    height=400,    
 )
 
 linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, europe_line_labels).configure_view(
@@ -505,11 +504,11 @@ linechart3_final
 
 ```
 
-Labor Productivity Forecast
-Linechart einfügen!
+:::
 
---- 
+::::
 
+## Implikationen: ACTION TITLE TBD
 
 Ein auffallendes Muster innerhalb der Daten bildet das Jahr 2020 ab. Die Corona Pandemie hat die Wirtschaft auf sämtlichen Ebenen beeinflusst und somit auch die Arbeitsproduktivität.
 
@@ -538,8 +537,7 @@ Ein auffallendes Muster innerhalb der Daten bildet das Jahr 2020 ab. Die Corona 
 ::::
 
 
-
-## Handlungsempfehlung: Methoden
+## Handlungsempfehlung: Pilotierung 4-Tage-Woche
 
 ::: {.incremental}
 - Hours worked: Ausgangssituation, : Wo stehen wir?, 
@@ -555,4 +553,5 @@ Wie kann Vorhaben/Hypothese umgesetzt werden?
 
 ## Danke für Ihre Aufmerksamkeit! {.unnumbered .unlisted}
 
+Bild als Hintergrund?
 Für Fragen und Amerkungen gerne jederzeit auf mich zukommen
