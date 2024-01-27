@@ -22,7 +22,7 @@ format:
             theme: [default,style.scss]
 ---
 
-## VIsionaryZ- Fakten & Status Quo
+## VIsionaryZ - Fakten & Status Quo
 
 **5 Jahre Firmenstandort in Deutschland.**
 Dazu ein paar Eckdaten zur aktuellen Lage:
@@ -540,7 +540,7 @@ linechart3_final
 
 
 ## Implikationen
-
+*noch nicht so smooth*
 <div>
 - **Ausgangslage:** Anzahl der Arbeitsstunden über die letzten Jahre:
 - **Perspektive der Mitarbeiter:** Mindestanzahl an Arbeitsstunden: 
@@ -573,25 +573,28 @@ linechart3_final
 
 ::::
 
-## Handlungsempfehlung: Datenerhebung innerhalb eines Piloten
+Bei einer **4-Tages-Woche** wären es dagegen **ca. 1.470h im Jahr**
+
+## Handlungsempfehlung
+### Datenerhebung innerhalb eines Piloten
 
 **Eine 4-Tage Woche triggert möglicherweise Veränderungen, die Folgen haben**
 *Tonspur Auf Basis des Daten und deren Auswertung schlage ich folgendes vor:*
-* Wie kann Vorhaben/Hypothese umgesetzt werden?*
+*Wie kann Vorhaben/Hypothese umgesetzt werden?*
 
 <div style="font-size:28pt">
 - Kompromisse eingehen: 4 Tage Woche sehr starke Maßnahme, um diese Brücke zwischen Arbeitsproduktivität und Work-Life-Balance zu gehen
 - Studien zeigen womöglich Steigerung der Produktivität trotz geringere Stundenwoche
-- UK als Vorreiter 
+- UK als Vorreiter <br>
 </div>
 
 
 . . .
 
 <text style="color:#004aad">**Das Konzept der 4-Tage-Woche gilt es in geeignetem Rahmen und Zeitpunkt zu pilotieren, um Auswirkungen im Unternehmen messbar zu machen**</text>
+- Verschiedene Konzepte wie 4x8h also 32h/Woche oder 4x10 also nach wie vor 40h/Woche
 
 ## {background-color="#004aad"} 
-
 
 <br><br><br><br><h2 style="text-align:center">Vielen Dank für Ihre Aufmerksamkeit!</h2>
 <p style="text-align:center">Für Fragen und Amerkungen gerne jederzeit auf mich zukommen</p>

@@ -41,9 +41,9 @@ tab1, tab2 = st.sidebar.tabs(["Fakten", "Definitionen"])
 # Tab 1: Fakten
 with tab1:
     st.markdown('''* Unsere Vollzeitbeschäftigten erreichen bei einer **5-Tages-Arbeitswoche** eine Anzahl von 40 Stunden''')
-    st.markdown('''* Ein Geschäftsjahr hat ca. **220 Werktage** exkl. der gesetzlichen Feiertagen und individuellem Urlaubsanspruch''')
-    st.markdown('''* Vollzeitbeschäftigte kommen damit also auf **ca. 1.760h pro Jahr**''')
-    st.markdown('''* :red[Bei einer **4-Tages-Woche** wären es dagegen **1.464h im Jahr**]''')
+    st.markdown('''* Ein Geschäftsjahr hat ca. **210 Werktage** exkl. der gesetzlichen Feiertagen und individuellem Urlaubsanspruch''')
+    st.markdown('''* Vollzeitbeschäftigte kommen damit also auf **ca. 1.680h pro Jahr**''')
+    st.markdown('''* :red[Bei einer **4-Tages-Woche** wären es dagegen **ca. 1.470h im Jahr**]''')
 
 # Tab 2: Definitionen
 with tab2:
@@ -154,6 +154,7 @@ barchart_final = alt.layer(barchart_base,barchart_labels).configure_view(
 st.altair_chart(barchart_final, use_container_width=True)
 
 # Quintessenz
+st.write("Gesamtheit der Stunden enthält auch u.a. die der Teilzeit Mitarbeitenden")
 st.write("hier Verhältnis, was kann man hier sehen: kurz und bündig, farbig hervorgehoben")
 st.markdown("""---""")
 
@@ -251,6 +252,7 @@ points | histogram2
 
 # Quintessenz
 st.write("hier Auswertung: kurz und bündig, farbig hervorgehoben")
+st.write(" Auswertung als Metrik?")
 st.markdown("""---""")
 
 
@@ -414,7 +416,8 @@ else:
     linechart3_final
 
 
-st.write("Peak & Low erklären + Ausblick -> farblich hervorheben")
+st.write("farblich hervorheben!")
+st.markdown("Markante Lows in den Daten erkennbar - zentrale wirtschaftliche Krisenzeitpunkte wie der Wirtschaftskrise 2007 und der Covid Pandemie in 2020")
 
 # Metrics 
 st.subheader("Relevante Kennzahlen")
@@ -437,7 +440,7 @@ col3.metric(label='Minimum', value=round(min_value, 2))
 # Quintessenz
 col4 = st.write("hier Auswertung: kurz und bündig, farbig hervorgehoben")
 
-# ...
+st.write("fehlt noch BIP in 2024 von UK und DE als Metric!")
 
 ### -------------------###
 # END OF APP
