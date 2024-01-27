@@ -20,7 +20,7 @@ df_selectedlocations = pd.read_csv("/Users/Lea/Desktop/dst-projekt/df_selectedlo
 # HEADER
 
 # Title of our app
-st.markdown('''# :bar_chart: Dashboard''')
+st.markdown('''# :bar_chart: Dashboard - Firmendaten VIsionaryZ''')
 
 # Add image
 st.image('unsplash_header.jpg')
@@ -43,11 +43,12 @@ with tab1:
     st.markdown('''* Unsere Vollzeitbeschäftigten erreichen bei einer **5-Tages-Arbeitswoche** eine Anzahl von 40 Stunden''')
     st.markdown('''* Ein Geschäftsjahr hat ca. **210 Werktage** exkl. der gesetzlichen Feiertagen und individuellem Urlaubsanspruch''')
     st.markdown('''* Vollzeitbeschäftigte kommen damit also auf **ca. 1.680h pro Jahr**''')
-    st.markdown('''* :red[Bei einer **4-Tages-Woche** wären es dagegen **ca. 1.470h im Jahr**]''')
+    st.markdown('''* :red[Bei einer **4-Tages-Woche** à 8h wären es dagegen **ca. 1.470h im Jahr**]''')
+
 
 # Tab 2: Definitionen
 with tab2:
-    st.markdown(''' Die **durchschnittliche Jahresarbeitszeit** ist definiert als die **Gesamtzahl der tatsächlich geleisteten Arbeitsstunden pro Jahr geteilt durch die durchschnittliche Zahl der Erwerbstätigen pro Jahr**. Die tatsächlich geleisteten Arbeitsstunden umfassen die reguläre Arbeitszeit von Vollzeit-, Teilzeit- und geringfügig beschäftigten Arbeitnehmern, bezahlte und unbezahlte Überstunden und schließen die Zeit aus, die aufgrund von Feiertagen, bezahltem Jahresurlaub, eigener Krankheitnund sonstigen anderen Gründen nicht geleistet wurde.''')
+    st.markdown('''Die **durchschnittliche Jahresarbeitszeit** ist definiert als die **Gesamtzahl der tatsächlich geleisteten Arbeitsstunden pro Jahr**. Die tatsächlich geleisteten Arbeitsstunden umfassen die reguläre Arbeitszeit von Vollzeit-, Teilzeit- und geringfügig beschäftigten Arbeitnehmern und schließen die Zeit aus, die aufgrund von Feiertagen, bezahltem Jahresurlaub, eigener Krankheit und sonstigen anderen Gründen nicht geleistet wurde.''')
     st.markdown("\n")
     st.markdown('''Die **Arbeitsproduktivität** ist definiert als **reales Bruttoinlandsprodukt (BIP)** pro Arbeitsstunde. Dies erfasst den Einsatz des Arbeitsinputs besser als der Output pro Arbeitnehmer, wobei der Arbeitsinput als die Gesamtheit der von allen beteiligten Personen geleisteten Arbeitsstunden definiert ist.''')
     
@@ -74,7 +75,7 @@ colors = alt.Scale(
     range=['#003f5c','#58508d','#bc5090','#ff6361','#ffa600']
 )
 
-st.markdown("## Die Arbeitsproduktivität unseres Unternehmens im Vergleich zu anderen Ländern") 
+st.markdown("## Visualisierung der Arbeitsproduktivität unseres Unternehmens") 
 st.markdown('##### Betrachtet werden interne Daten des Jahres :orange[**2022**] und reichen zurück bis in das Jahr :blue[**2019**].')
 st.markdown('##### Betrachtete Länder und Regionen:')
 st.markdown('''*:de: Deutschland* ''')
@@ -82,17 +83,16 @@ st.markdown('''*:uk: Großbritannien*''')
 st.markdown('''*:flag-eu: Europa zum Ländervergleich*''')
 
 
-# Intro: Instructions
-st.markdown("##### Was kann man hier tun? -> Instructions für Zielgruppe")
 st.markdown("""---""")
 
 # *********************Balkendiagramm *****************************
 
-st.markdown("#### Gearbeitete Stunden gemessen an einer normalen 5-Tage Woche à 40h")
+st.markdown("### Anzahl an geleisteten Stunden pro Jahr")
+st.markdown('##### Die visualisierten Daten reichen von :blue[**2019**] bis :red[**2022**].')
 
 #Liste zum Filtern 
 YEARS = df_selectedlocations.groupby('TIME')['LOCATION'].apply(list).to_dict()
-YEAR_SELECTED = st.multiselect('Nach Jahren filtern:', list(YEARS.keys()))
+YEAR_SELECTED = st.multiselect('###### Nach Jahren filtern:', list(YEARS.keys()))
 
 # Filter
 filtered_df = df_selectedlocations[df_selectedlocations['LOCATION'].isin(YEAR_SELECTED)]
@@ -106,13 +106,13 @@ else:
 # Code Barchart filtered
 barchart_base = alt.Chart(filtered_df).mark_bar().encode(
     x=alt.X('VALUE', scale=alt.Scale(bins=[0,1000,2000,3000,4000,5000,6000,7000])).axis(
-        title='Stunden',
+        title='Hours',
         titleAnchor='start',
         grid=False,
         labelColor='black',
         tickColor='grey'),
     y=alt.Y('LOCATION').axis(
-        title='Standort',
+        title='Location',
         titleAnchor='middle',
         titleAngle=-90,
         labelAngle= 0,
@@ -123,10 +123,7 @@ barchart_base = alt.Chart(filtered_df).mark_bar().encode(
     #column=alt.Column('day:N', sort=['Thur','Fri','Sat','Sun'], header=alt.Header(orient='bottom'))  
 ).properties(
     width=800,
-    height=500,
-    title=alt.Title(
-        "Hours worked",
-    )
+    height=500
 )
 
 barchart_labels = alt.Chart(filtered_df).mark_text(baseline='middle', color='black').encode(
@@ -136,10 +133,6 @@ barchart_labels = alt.Chart(filtered_df).mark_text(baseline='middle', color='bla
 
 barchart_final = alt.layer(barchart_base,barchart_labels).configure_view(
     strokeWidth=0
-).configure_title(
-    fontSize=25,
-    anchor='middle',
-    fontWeight='bold',
 ).configure_axis(
     labelFontSize = 11,
     titleFontSize = 12,
@@ -154,14 +147,45 @@ barchart_final = alt.layer(barchart_base,barchart_labels).configure_view(
 st.altair_chart(barchart_final, use_container_width=True)
 
 # Quintessenz
-st.write("Gesamtheit der Stunden enthält auch u.a. die der Teilzeit Mitarbeitenden")
-st.write("hier Verhältnis, was kann man hier sehen: kurz und bündig, farbig hervorgehoben")
+st.caption("Arbeitsstunden p.a. enthalten auch z.B. Stunden von Teilzeitbeschäftigten")
+
+#Metriken 2022
+st.markdown("##### Verhältnis der gearbeiteten Stunden unserer Firmenstandorte in :orange[2022]:")
+
+col1, col2,= st.columns(2)
+
+metric_mean_uk = df_selectedlocations[(df_selectedlocations['LOCATION'] == 'United Kingdom')]['VALUE'].mean()
+col1.metric(label='UK, Durchschnitt', value=metric_mean_uk)
+
+metric_mean_ger = df_selectedlocations[(df_selectedlocations['LOCATION'] == 'Germany')]['VALUE'].mean()
+metric_mean_ger_rounded = round(metric_mean_ger,0)
+col2.metric(label='Deutschland, Durchschnitt', value=metric_mean_ger_rounded)
+
+#Metriken im Durchschnitt
+col3, col4,= st.columns(2)
+
+metric_value = df_selectedlocations[(df_selectedlocations['TIME'] == 2022) & (df_selectedlocations['LOCATION'].isin(['United Kingdom']))]['VALUE'].sum()
+col3.metric(label='UK, 2022', value=metric_value, delta=metric_value-metric_mean_uk)
+
+metric_value2 = df_selectedlocations[(df_selectedlocations['TIME'] == 2022) & (df_selectedlocations['LOCATION'].isin(['Germany']))]['VALUE'].sum()
+col4.metric(label='Deutschland, 2022', value=metric_value2,  delta=metric_value2-metric_mean_ger_rounded)
+
+
+
+
+#metric_value = df_selectedlocations['LOCATION'].isin(['United Kingdom', 'Germany']) & (df_selectedlocations['TIME'] == 2022)
+#st.metric(label='Value', value=metric_value)
+
+#--
+
 st.markdown("""---""")
 
 
 # ***********Boxplot: Hours worked to exit poverty, im Verlauf der Jahre 2019-22*******************
 
-st.markdown("#### Benötigte Arbeitsstunden, um nicht in Armut zu leben")
+st.markdown("### Mindestanzahl an zu arbeitenden Stunden")
+st.markdown("##### Anzahl der benötigten Stunden für Beschäftige :blue[mit zwei Kindern] und :violet[ohne Kind] werden in unteren Diagrammen aufgeschlüsselt und können einzeln betrachtet werden.")
+st.markdown("\n")
 
 df2_selectedlocations = pd.read_csv("/Users/Lea/Desktop/dst-projekt/df2_selectedlocations.csv")
 
@@ -177,7 +201,7 @@ boxplot = alt.Chart(df2_selectedlocations).mark_boxplot(size=80, extent=0.5).enc
         grid=False,
         labelColor='black',
         tickColor='grey'),
-    y=alt.Y('VALUE:Q', title='Stundenanzahl', scale=alt.Scale(bins=[0,2,4,6,8,10,12,14,16,18],domain=(0,20))).axis(
+    y=alt.Y('VALUE:Q', title='Hours', scale=alt.Scale(bins=[0,2,4,6,8,10,12,14,16,18],domain=(0,20))).axis(
         titleAnchor='start',
         grid=False,
         labelColor='black',
@@ -250,14 +274,26 @@ histogram2 = base.mark_bar(opacity=0.7, thickness=100).encode(
 
 points | histogram2
 
-# Quintessenz
-st.write("hier Auswertung: kurz und bündig, farbig hervorgehoben")
-st.write(" Auswertung als Metrik?")
+#Metriken
+st.markdown("##### Durchschnittliche Mindeststundenanzahl im Geschäftsjahr :red[2022] (52 Wochen):")
+
+col1, col2,= st.columns(2)
+
+#subject_2_children_2022 = df2_selectedlocations[(df2_selectedlocations['SUBJECT'] == '2 CHILDREN') & (df2_selectedlocations['TIME'] == 2022)]
+
+metric_subject1 = df2_selectedlocations[(df2_selectedlocations['SUBJECT'] == '2 CHILDREN') & (df2_selectedlocations['TIME'] == 2022)]['VALUE'].mean()
+metric_subject1_rounded = round(metric_subject1,1)
+col1.metric(label='Beschäftigte mit 2 Kindern', value=metric_subject1_rounded*52)
+
+metric_subject2 = df2_selectedlocations[(df2_selectedlocations['SUBJECT'] == 'NO CHILDREN') & (df2_selectedlocations['TIME'] == 2022)]['VALUE'].mean()
+metric_subject2_rounded = round(metric_subject2,1)
+col2.metric(label='kinderlose Beschäftigte', value=metric_subject2_rounded*52)
+
 st.markdown("""---""")
 
 
 # *********** Scatterplot *******************
-st.markdown("#### Scatterplot")
+st.markdown("### Scatterplot")
 st.write("Hier Zusammenhang der gearbeiteten Stunden Wöchentlich und Jährlich zeigen")
 st.markdown("""---""")
 
@@ -267,7 +303,7 @@ st.markdown("""---""")
 df3_selectedlocations = pd.read_csv("/Users/Lea/Desktop/dst-projekt/df3_selectedlocations.csv")
 europe = pd.read_csv("/Users/Lea/Desktop/dst-projekt/europe_forecast.csv")
 
-st.markdown("#### Wie sich die Arbeitsproduktivität in Zukunft entwickeln wird")
+st.markdown("### Wie sich die Arbeitsproduktivität entwickelt hat und entwickeln wird")
 
 # Code für Chart 
 colors_linechart3 = alt.Scale(
@@ -277,7 +313,7 @@ colors_linechart3 = alt.Scale(
 #Code Slider 
 #Liste zum Filtern 
 LOCATIONS = df3_selectedlocations.groupby('LOCATION')['TIME'].apply(list).to_dict()
-LOCATIONS_SELECTED = st.multiselect('Nach Region filtern:', list(LOCATIONS.keys()))
+LOCATIONS_SELECTED = st.multiselect('###### Nach Region filtern:', list(LOCATIONS.keys()))
 
 # Filter
 filtered_df3 = df3_selectedlocations[df3_selectedlocations['TIME'].isin(LOCATIONS_SELECTED)]
@@ -416,35 +452,34 @@ else:
     linechart3_final
 
 
-st.write("farblich hervorheben!")
-st.markdown("Markante Lows in den Daten erkennbar - zentrale wirtschaftliche Krisenzeitpunkte wie der Wirtschaftskrise 2007 und der Covid Pandemie in 2020")
+mean_bip = df3_selectedlocations['VALUE'].mean()
+mean_bip_rounded = round(mean_bip, 2)
+st.markdown("###### Das durchschnittliche Bruttoinlandsprodukt beträgt " + str(mean_bip_rounded))
+
 
 # Metrics 
 st.subheader("Relevante Kennzahlen")
 
+
 # Create two columns for displaying metrics
-col1, col2, col3, col4= st.columns(4)
+col1, col2 = st.columns(2)
 
-# Calculate the mean of the 'VALUE' column in df3_selectedlocations
-mean_value = df3_selectedlocations['VALUE'].mean()
-col1.metric(label='Durchschnittliches BIP', value=round(mean_value, 2))
+uk_value_2022 = df3_selectedlocations[(df3_selectedlocations['LOCATION']=='United Kingdom') & (df3_selectedlocations['TIME']== 2022)]['VALUE']
+col1.metric(label='UK, 2024', value=round(uk_value_2022, 2))
 
-# Calculate the maximum value in the 'VALUE' column of df3_selectedlocations
-max_value = df3_selectedlocations['VALUE'].max()
-col2.metric(label='Maximum', value=round(max_value, 2))
+ger_value_2022 = df3_selectedlocations[(df3_selectedlocations['LOCATION']=='Germany') & (df3_selectedlocations['TIME']== 2020)]['VALUE']
+col2.metric(label='Deutschland, 2024', value=round(ger_value_2022, 2))
 
-# Calculate the minimum value in the 'VALUE' column of df3_selectedlocations
-min_value = df3_selectedlocations['VALUE'].min()
-col3.metric(label='Minimum', value=round(min_value, 2))
+# Metriken 2020
 
-# Quintessenz
-col4 = st.write("hier Auswertung: kurz und bündig, farbig hervorgehoben")
+col3, col4 = st.columns(2)
 
-st.write("fehlt noch BIP in 2024 von UK und DE als Metric!")
+uk_value_2020 = df3_selectedlocations[(df3_selectedlocations['LOCATION']=='United Kingdom') & (df3_selectedlocations['TIME']== 2020)]['VALUE']
+#uk_value_2020_rounded = round(uk_value_2020,1)
+col3.metric(label='UK, 2020', value= uk_value_2020)
 
-### -------------------###
-# END OF APP
-
+ger_value_2020 = df3_selectedlocations[(df3_selectedlocations['LOCATION']=='Germany') & (df3_selectedlocations['TIME']== 2020)]['VALUE']
+col4.metric(label='Deutschland, 2020', value= ger_value_2020)
 
 ### -------------------###
 # END OF APP
