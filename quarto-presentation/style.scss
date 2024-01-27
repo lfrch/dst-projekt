@@ -1,10 +1,11 @@
 /*-- scss:defaults --*/
-$body-color: #fff;
 $link-color: black;
-$font-family: Roboto;
+/*--$font-family: Roboto;--*/
 $font-color: black;
-$presentation-heading-font: Roboto;
-$presentation-heading-color: #19598d;
+$presentation-heading-font: Helvetica !default;
+$presentation-heading-color: #004aad;
+
+$presentation-h2-font-size: 1.5em;
 $body-font-color: black;
 
 
@@ -12,7 +13,6 @@ $body-font-color: black;
 /*-- scss:rules --*/
 
 .reveal .slide blockquote {
-  border-left: 3px solid $text-muted;
+  border-left: 3px solid;
   padding-left: 0.5em;
-  $font-family: Roboto;
 }

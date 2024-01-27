@@ -1,6 +1,6 @@
 ---
-title: "Exkurs Arbeitsproduktivität "
-subtitle: "Entscheidungsfindung auf der Grundlage von Unternehmensdaten der Firma X"
+title: "Firmeninterne Arbeitsproduktivität "
+subtitle: "Entscheidungsfindung auf der Grundlage von VIsionaryZ Firmendaten"
 author: "Lea Frech"
 execute: 
     eval: true
@@ -9,26 +9,29 @@ format:
     revealjs:
             embed-resources: true
             toc: true
+            toc-depth: 2
             toc-title: Agenda
+            toc-expand: 1
             code-copy: true
             code-line-numbers: true
             scrollable: true
+            #smaller: true
             incremental: true
             slide-number: c
             transition: slide
-            theme: default
+            theme: [default,style.scss]
 ---
 
-## Firma X - Fakten & Status Quo
+## VIsionaryZ- Fakten & Status Quo
 
-Seit 5 Jahren gibt es unseren Firmenstandort in Deutschland.
-Hierfür ein paar Eckdaten zur aktuellen Lage:
+**5 Jahre Firmenstandort in Deutschland.**
+Dazu ein paar Eckdaten zur aktuellen Lage:
 
 - Unser Hauptstandort in UK testet aktuell das New-Work-Konzept der 4-Tages-Woche
-- Seit Eröffnung des zweiten Standorts in Deutschland, gilt es interne Daten zu beleuchten und - auch vergleichend zu den Kollegen in UK, bestehende Arbeitsmodi zu hinterfragen und ggf. zu testen
+- Seit Eröffnung des zweiten Standorts in Deutschland, gilt es interne Daten zu beleuchten und - auch vergleichend zu den Kollegen in UK, bestehende Arbeitsmodi zu hinterfragen und ggf. zu testen -> *evtl. an Formulierung schrauben!*
 - **Ausblick: Wo stehen wir aktuell?**
 
-## Exkurs zum aktuellen Arbeitsmodus
+## Exkurs: Anzahl Arbeitsstunden je Geschäftsjahr
 Die Arbeitsproduktivität wird in folgendem an der jährlich Anzahl der gearbeiteten Stunden gemessen. Hierfür stellt auch das Bruttoinlandsprodukt ein wesentlicher KPI dar.
 
 :::: {.columns}
@@ -44,11 +47,16 @@ Die Arbeitsproduktivität wird in folgendem an der jährlich Anzahl der gearbeit
 :::
 
 ::::
-
+*ggf nur Tonspur*
 **Zu untersuchen: Status Quo; Implikationen auf den Arbeitsmodus hinsichtlich dem Trend zur 4-Tage Woche**
 
 
-## Summierte Stundenzahl der letzten Jahre
+## {.unlisted}
+
+<div style="font-size:36pt">
+**Gerarbeitete Stunden im Zeitraum von:**<text style="color:#003f5c"> **2019**</text> - <text style="color:#ff6361">**2022**</text>
+<br>
+</div>
 
 ```{python}
 import pandas as pd
@@ -72,8 +80,7 @@ df_selectedlocations = pd.read_csv(LINK1)
 :::: {.columns}
 
 ::: {.column width="40%"}
-**Betrachteter Zeitraum:**<text style="color:#003f5c"> **2019**</text> - <text style="color:#ff6361">**2022**</text><br><br>
-Im Verhältnis stehen unsere beiden Firmenstandorte mit der OECD, ein zur Gesamtheit der Länder repräsentativer Zusammenschluss und der EU 
+<text style="font-size:smaller">Im Verhältnis stehen unsere beiden Firmenstandorte mit der OECD^[Organisation für wirtschaftliche Zusammenarbeit und Entwicklung], ein zur Gesamtheit der Länder repräsentativer Zusammenschluss und der EU</text>
 
 :::
 
@@ -84,13 +91,13 @@ Im Verhältnis stehen unsere beiden Firmenstandorte mit der OECD, ein zur Gesamt
 
 barchart1 = alt.Chart(df_selectedlocations).mark_bar().encode(
     x=alt.X('VALUE', scale=alt.Scale(bins=[0,1000,2000,3000,4000,5000,6000,7000])).axis(
-        title='Anzahl Stunden',
+        title='Hours',
         titleAnchor='start',
         grid=False,
         labelColor='black',
         tickColor='grey'),
     y=alt.Y('LOCATION').axis(
-        title='Standort',
+        title='Location',
         titleAnchor='middle',
         titleAngle=-90,
         labelAngle= 0,
@@ -138,9 +145,11 @@ barchart1_final
 
 ::::
 
----
-
-<text>**2020:**</text><text style="color:#ff6361"> **wirtschaftlicher Tiefpunkt**</text><br>
+## {.unlisted}
+<div style="font-size:36pt">
+<text>**2020: wirtschaftlicher Tiefpunkt**</text>
+<br>
+</div>
 
 
 ```{python}
@@ -151,12 +160,12 @@ colors_linechart1 = alt.Scale(
 
 #Linechart
 linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
-    x=alt.X('TIME:O', title='Jahr').axis(
+    x=alt.X('TIME:O', title='Year').axis(
         titleAnchor='start',
         labelAngle= -0,
         ),
     y=alt.Y('VALUE').scale(domain=(1000,2000), bins=(1000,1300,1600,1900,2100)).axis(
-        title='Anzahl Stunden',
+        title='Hours',
         titleAnchor='end',
         grid= False,
         ),
@@ -199,8 +208,6 @@ linechart_datalabels = alt.Chart(df_selectedlocations[(df_selectedlocations['LOC
     color=alt.Color('LOCATION', scale=colors_linechart1)
 )
 
-
-
 # Chart 1 - Final Viz
 linechart1_final = alt.layer(linechart1, linechart_labels,linechart_points, linechart_datalabels).configure_view(
     strokeWidth=0
@@ -222,17 +229,22 @@ linechart1_final
 
 ```
 
-## 2022: Steigerung auf X Stunden
+
+## {.unlisted}
+<div style="font-size:36pt">
+<text>**2022: Anstieg der Arbeitsstunden**</text>
+<br>
+</div>
 
 ```{python}
 #Linechart
 linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
-    x=alt.X('TIME:O', title='Jahr').axis(
+    x=alt.X('TIME:O', title='Year').axis(
         titleAnchor='start',
         labelAngle= -0,
         ),
     y=alt.Y('VALUE').scale(domain=(1000,2000), bins=(1000,1300,1600,1900,2100)).axis(
-        title='Anzahl Stunden',
+        title='Hours',
         titleAnchor='end',
         grid= False,
         ),
@@ -298,12 +310,11 @@ linechart2_final
 
 ```
 
-## Wie steht es um die Mitarbeitenden?
+
+## Aus der Mitarbeiterperspektive heraus
 <text>hier: Untergrenze der benötigten Arbeitsstunden</text>
 
-::::
-
-::: {.columns}
+:::: {.columns}
 
 ::: {.column width="40%"}
 <text style="color:#003f5c">**10,6 Stunden,d.h. weniger als 600 Stunden p.a.**</text><br><br>
@@ -374,15 +385,32 @@ boxplot_final
 
 ::::
 
+## Was bedeutet das in unserem Firmenkontext? 
 
-## Was bedeutet das in unserem Firmenkontext?
+Zusammenhang!
 
-Scatterplot!
+* Um"dichten" zu ActionTitle mit Aussage!
+
+:::: {.columns}
+
+::: {.column width="60%"}
+- aktuelle **5-Tages-Arbeitswoche**: 40h Arbeitszeit pro Woche
+- ein Geschäftsjahr bringt **52 Arbeitswochen**, also **210 Werktage** exkl. Feiertage und individuellem Urlaubsanspruch
+:::
+
+::: {.column width="40%"}
+- Vollzeitbeschäftigte kommen damit also auf **ca. 1.680h pro Jahr**
+
+:::
+
+::::
 
 
 ## Ein Blick in die Zukunft
 
-<text style="color:grey">Entwicklung des Bruttoinlandprodukts</text>
+<text style="color:grey">Entwicklung des Bruttoinlandprodukts als Maß zur Arbeitsproduktivität</text>
+
+. . .
 
 ```{python}
 #Import Datasets
@@ -395,7 +423,7 @@ europe = pd.read_csv(LINK4)
 #Linechart
 
 europe_linechart = alt.Chart(europe).mark_line(strokeDash=[5, 5]).encode(
-    x=alt.X('TIME:O', title='Jahr').axis(
+    x=alt.X('TIME:O', title='Year').axis(
         titleAnchor='start',
         labelAngle= -0,
         ),
@@ -416,8 +444,8 @@ europe_line_labels = alt.Chart(europe).mark_text(align='left', dx=3).encode(
     alt.Text('LOCATION:N'),
     color=alt.value('grey')
 ).properties(
-    width=600,
-    height=400   
+    width=700,
+    height=450   
 )
 
 europe_linechart_final = alt.layer( europe_linechart, europe_line_labels).configure_view(
@@ -429,7 +457,7 @@ europe_linechart_final = alt.layer( europe_linechart, europe_line_labels).config
 ).configure_axis(
     labelFontSize = 12,
     titleFontSize = 14,
-    titleFontWeight= 'bold',
+    titleFontWeight= 'normal',
     titleColor='grey'
 ).configure_text(
     fontWeight='bold',
@@ -440,21 +468,27 @@ europe_linechart_final
 
 ```
 
----
 
-## Ein Blick in die Zukunft: BIP relevanter Standorte
+## steigende Produktivität: GDP X {.unlisted}
 
+*Headline in entsprechender Farbe einfärben, ggf. Wert vor UK & GER Label schreiben?
+
+. . . 
 
 :::: {.columns}
 
-::: {.column width="20%"}
+::: {.column width="50%"}
 
-<text style="color:#ff6361">**GDP von X**</text><br>
-<text style="color:#ffa600">**GDP von X**</text>
+<text style="color:#ff6361">GDP 1,05</text><br>
 
 :::
 
-::: {.column width="80%"}
+::: {.column width="50%"}
+<text style="color:#ffa600">GDP 1,02</text>
+:::
+
+::::
+
 
 ```{python}
 colors_linechart3 = alt.Scale(
@@ -462,7 +496,7 @@ colors_linechart3 = alt.Scale(
 )
 
 linechart3 = alt.Chart(df3_selectedlocations).mark_line().encode(
-    x=alt.X('TIME:O', title='Jahr').axis(
+    x=alt.X('TIME:O', title='Year').axis(
         titleAnchor='start',
         labelAngle= -0,
         ),
@@ -484,8 +518,8 @@ linechart3_labels = alt.Chart(df3_selectedlocations).mark_text(align='left', dx=
     alt.Text('LOCATION'),
     alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
 ).properties(
-    width=600,
-    height=400,    
+    width=700,
+    height=450,    
 )
 
 linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, europe_line_labels).configure_view(
@@ -493,7 +527,7 @@ linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, eu
 ).configure_axis(
     labelFontSize = 12,
     titleFontSize = 14,
-    titleFontWeight= 'bold',
+    titleFontWeight= 'normal',
     titleColor='grey'
 ).configure_text(
     fontWeight='bold',
@@ -504,54 +538,60 @@ linechart3_final
 
 ```
 
-:::
 
-::::
+## Implikationen
 
-## Implikationen: ACTION TITLE TBD
+<div>
+- **Ausgangslage:** Anzahl der Arbeitsstunden über die letzten Jahre:
+- **Perspektive der Mitarbeiter:** Mindestanzahl an Arbeitsstunden: 
+- **Produktivitätstrends:** stetige Wachstumstendenz
+</div>
 
-Ein auffallendes Muster innerhalb der Daten bildet das Jahr 2020 ab. Die Corona Pandemie hat die Wirtschaft auf sämtlichen Ebenen beeinflusst und somit auch die Arbeitsproduktivität.
+. . .
+
+<div>
+<text style="color:#004aad">**Wie gestalten wir 2024?**</text>
+</div>
 
 :::: {.columns}
 
-::: {.column width="50%"}
-
-:::{.nonincremental}
-- Aufschwung seither
-- Momentaufnahme: Erholung des konjunkturarmen Jahr 2023
-- Es gilt: Mitarbeitende an das Unternehmen binden
-- New Work Konzepte werden gefragter und relevanter 
-:::
+::: {.column}
+<div style="font-size:25pt">
+- Nach konjunkturarmen 2020 erholt sich die Wirtschaft und damit auch die Arbeitsproduktivität
+- Momentaufnahme: 2023 war ein starkes Jahr
+</div>
 
 :::
 
-::: {.column width="50%"}
+::: {.column}
+<div style="font-size:25pt">
+- New Work Konzepte werden immer relevanter
+- Mitarbeiter stehen im Fokus und sollen weiterhin an das Unternehmen gebunden werden
+</div>
 
-:::{.nonincremental}
-- Kompromisse eingehen: 4 Tage Woche sehr starke Maßnahme, um diese Brücke zwischen Arbeitsproduktivität und Work-Life-Balance zu gehen
-- usw. Recap der Fakten und analysierten Daten
-:::
-
-:::
+::: 
 
 ::::
 
+## Handlungsempfehlung: Datenerhebung innerhalb eines Piloten
 
-## Handlungsempfehlung: Pilotierung 4-Tage-Woche
+**Eine 4-Tage Woche triggert möglicherweise Veränderungen, die Folgen haben**
+*Tonspur Auf Basis des Daten und deren Auswertung schlage ich folgendes vor:*
+* Wie kann Vorhaben/Hypothese umgesetzt werden?*
 
-::: {.incremental}
-- Hours worked: Ausgangssituation, : Wo stehen wir?, 
-- Hours needed to exit poverty repräsentiert die Untergrenze: wichtig sind unsere Mitarbeiter
-- Productivity Forecast: Trends und wirtschaftliche Tendenz, Wie verhält sich die Welt?, Wagen wir eine Umstellung des Arbeitsmodus? Was sind Risiken
+<div style="font-size:28pt">
+- Kompromisse eingehen: 4 Tage Woche sehr starke Maßnahme, um diese Brücke zwischen Arbeitsproduktivität und Work-Life-Balance zu gehen
+- Studien zeigen womöglich Steigerung der Produktivität trotz geringere Stundenwoche
+- UK als Vorreiter 
+</div>
 
-##### Empfehlung
 
-Auf Basis des Daten und deren Auswertung schlage ich folgendes vor:
-Wie kann Vorhaben/Hypothese umgesetzt werden?
+. . .
 
-:::
+<text style="color:#004aad">**Das Konzept der 4-Tage-Woche gilt es in geeignetem Rahmen und Zeitpunkt zu pilotieren, um Auswirkungen im Unternehmen messbar zu machen**</text>
 
-## Danke für Ihre Aufmerksamkeit! {.unnumbered .unlisted}
+## {background-color="#004aad"} 
 
-Bild als Hintergrund?
-Für Fragen und Amerkungen gerne jederzeit auf mich zukommen
+
+<br><br><br><br><h2 style="text-align:center">Vielen Dank für Ihre Aufmerksamkeit!</h2>
+<p style="text-align:center">Für Fragen und Amerkungen gerne jederzeit auf mich zukommen</p>
