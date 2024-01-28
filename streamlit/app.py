@@ -171,20 +171,13 @@ metric_value2 = df_selectedlocations[(df_selectedlocations['TIME'] == 2022) & (d
 col4.metric(label='Deutschland, 2022', value=metric_value2,  delta=metric_value2-metric_mean_ger_rounded)
 
 
-
-
-#metric_value = df_selectedlocations['LOCATION'].isin(['United Kingdom', 'Germany']) & (df_selectedlocations['TIME'] == 2022)
-#st.metric(label='Value', value=metric_value)
-
-#--
-
 st.markdown("""---""")
 
 
 # ***********Boxplot: Hours worked to exit poverty, im Verlauf der Jahre 2019-22*******************
 
 st.markdown("### Mindestanzahl an zu arbeitenden Stunden")
-st.markdown("##### Anzahl der benötigten Stunden für Beschäftige :blue[mit zwei Kindern] und :violet[ohne Kind] werden in unteren Diagrammen aufgeschlüsselt und können einzeln betrachtet werden.")
+st.markdown("##### Anzahl der benötigten Stunden für Beschäftige :blue[mit zwei Kindern] und :violet[ohne Kind] bei durchschnittlichen Lohn werden in unteren Diagrammen aufgeschlüsselt und können einzeln betrachtet werden.")
 st.markdown("\n")
 
 df2_selectedlocations = pd.read_csv("/Users/Lea/Desktop/dst-projekt/df2_selectedlocations.csv")
@@ -249,7 +242,7 @@ base = alt.Chart(df2_selectedlocations).properties(
 
 points = base.mark_point(filled=True, size=200).encode(
     x=alt.X('TIME:O').axis(
-        title="Jahr",
+        title="Year",
         labelAngle=0),
     y=alt.Y('mean(VALUE):Q', axis=alt.Axis(title='Mean Value', format='.1f'))
         .scale(domain=[8,16]),
@@ -261,9 +254,9 @@ points = base.mark_point(filled=True, size=200).encode(
 )
 
 histogram2 = base.mark_bar(opacity=0.7, thickness=100).encode(
-    alt.X('VALUE', title="Stundenanzahl")
+    alt.X('VALUE', title="Hours")
         .bin(step=5), 
-    alt.Y('count()', title="Häufigkeit")
+    alt.Y('count()', title="Count")
         .stack(None)
         .scale(domain=[0,15])
         ,
@@ -279,8 +272,6 @@ st.markdown("##### Durchschnittliche Mindeststundenanzahl im Geschäftsjahr :red
 
 col1, col2,= st.columns(2)
 
-#subject_2_children_2022 = df2_selectedlocations[(df2_selectedlocations['SUBJECT'] == '2 CHILDREN') & (df2_selectedlocations['TIME'] == 2022)]
-
 metric_subject1 = df2_selectedlocations[(df2_selectedlocations['SUBJECT'] == '2 CHILDREN') & (df2_selectedlocations['TIME'] == 2022)]['VALUE'].mean()
 metric_subject1_rounded = round(metric_subject1,1)
 col1.metric(label='Beschäftigte mit 2 Kindern', value=metric_subject1_rounded*52)
@@ -293,8 +284,28 @@ st.markdown("""---""")
 
 
 # *********** Scatterplot *******************
-st.markdown("### Scatterplot")
-st.write("Hier Zusammenhang der gearbeiteten Stunden Wöchentlich und Jährlich zeigen")
+st.markdown("### Das Verhältnis zwischen den benötigten Arbeitsstunden und den tatsächlich gearbeiteten Stunden")
+st.markdown('\n')
+
+# Pfad zum df angeben
+merged_df = pd.read_csv("/Users/Lea/Desktop/dst-projekt/merged_df.csv")
+
+scatterplot = alt.Chart(merged_df).mark_circle(filled=True, size=100).encode(
+    x=alt.X('Hours_needed:Q').axis(
+        grid=False),
+    y=alt.Y('Hours_worked:Q').scale(domain=[1000,2000]).axis(
+        grid=False),
+    color=alt.Color('SUBJECT1', scale=color_scale, legend=None)
+).properties(
+    width=800,
+    height=500
+)
+
+st.altair_chart(scatterplot, use_container_width=True)
+
+st.caption('Benötigte Stunden wurden auf jährliche Anzahl hochskaliert')
+
+st.markdown("##### Die Differenz zwischen den jährlich benötigten Stunden und der tatsächlich geleisteten Arbeitsstunden ist groß. Das bestärkt uns im jetzigen Arbeitsmodus und zeigt, dass Beschäftige :blue[mit zwei Kindern] und :violet[ohne Kind] bei durchschnittlichen Lohn in unserem Unternehmen gut da stehen.")
 st.markdown("""---""")
 
 
@@ -327,13 +338,13 @@ else:
 
 # Code Linechart
 linechart3 = alt.Chart(filtered_df3).mark_line().encode(
-    x=alt.X('TIME:O', title='Jahr').axis(
+    x=alt.X('TIME:O', title='Year').axis(
         titleAnchor='start',
         labelAngle= -0,
         labelColor='black',
         ),
     y=alt.Y('VALUE').scale(domain=(0.86,1.10)).axis(
-        title='BIP pro gearbeitete Stunde',
+        title='GDP per hour worked',
         titleAnchor='end',
         grid= False,
         labelColor='black',
@@ -429,7 +440,10 @@ linechart3_final = alt.layer(linechart3, linechart3_labels, europe_linechart, eu
     fontSize = 12
 )
 
+
 MEAN_LINE_SELECTED = st.checkbox("Linie für Mittleres BIP einblenden")
+st.markdown("\n")
+
 if MEAN_LINE_SELECTED:
     linechart3_final_with_mean = alt.layer(linechart3, linechart3_labels, europe_linechart, europe_line_labels, mean_line, mean_line_label).configure_view(
         strokeWidth=0
