@@ -1,6 +1,6 @@
 ---
 title: "Firmeninterne Arbeitsproduktivität "
-subtitle: "Entscheidungsfindung auf der Grundlage von VIsionaryZ Firmendaten"
+subtitle: "Chancen hinsichtlich des Arbeitsmodus auf der Grundlage von VIsionaryZ Firmendaten"
 author: "Lea Frech"
 execute: 
     eval: true
@@ -15,7 +15,6 @@ format:
             code-copy: true
             code-line-numbers: true
             scrollable: true
-            #smaller: true
             incremental: true
             slide-number: c
             transition: slide
@@ -25,14 +24,13 @@ format:
 ## VIsionaryZ - Fakten & Status Quo
 
 **5 Jahre Firmenstandort in Deutschland.**
-Dazu ein paar Eckdaten zur aktuellen Lage:
 
-- Unser Hauptstandort in UK testet aktuell das New-Work-Konzept der 4-Tages-Woche
-- Seit Eröffnung des zweiten Standorts in Deutschland, gilt es interne Daten zu beleuchten und - auch vergleichend zu den Kollegen in UK, bestehende Arbeitsmodi zu hinterfragen und ggf. zu testen -> *evtl. an Formulierung schrauben!*
+- Kollegen im HQ in UK stellen derzeit Überlegungen zur Anpassungen des Arbeitsmodus an die 4-Tages-Woche an
+- Seit Eröffnung des zweiten Standorts in Deutschland, gilt es interne Daten zu beleuchten und - auch vergleichend zu den Kollegen in UK, Verbesserungen vorzunehmen
 - **Ausblick: Wo stehen wir aktuell?**
 
 ## Exkurs: Anzahl Arbeitsstunden je Geschäftsjahr
-Die Arbeitsproduktivität wird in folgendem an der jährlich Anzahl der gearbeiteten Stunden gemessen. Hierfür stellt auch das Bruttoinlandsprodukt ein wesentlicher KPI dar.
+Die Arbeitsproduktivität wird in folgendem an der jährlich Anzahl der gearbeiteten Stunden gemessen.
 
 :::: {.columns}
 
@@ -47,8 +45,7 @@ Die Arbeitsproduktivität wird in folgendem an der jährlich Anzahl der gearbeit
 :::
 
 ::::
-*ggf nur Tonspur*
-**Zu untersuchen: Status Quo; Implikationen auf den Arbeitsmodus hinsichtlich dem Trend zur 4-Tage Woche**
+
 
 
 ## {.unlisted}
@@ -78,11 +75,6 @@ df_selectedlocations = pd.read_csv(LINK1)
 ```
 
 :::: {.columns}
-
-::: {.column width="40%"}
-<text style="font-size:smaller">Im Verhältnis stehen unsere beiden Firmenstandorte mit der OECD^[Organisation für wirtschaftliche Zusammenarbeit und Entwicklung], ein zur Gesamtheit der Länder repräsentativer Zusammenschluss und der EU</text>
-
-:::
 
 ::: {.column width="60%"}
 
@@ -140,6 +132,11 @@ barchart1_final = alt.layer(barchart1,barchart1_labels).configure_view(
 barchart1_final
 
 ```
+
+:::
+
+::: {.column width="40%"}
+<text style="font-size:20pt">Im Verhältnis stehen unsere beiden Firmenstandorte mit der OECD^[Organisation für wirtschaftliche Zusammenarbeit und Entwicklung], ein zur Gesamtheit der Länder repräsentativer Zusammenschluss und der EU</text>
 
 :::
 
@@ -311,19 +308,15 @@ linechart2_final
 ```
 
 
-## Aus der Mitarbeiterperspektive heraus
-<text>hier: Untergrenze der benötigten Arbeitsstunden</text>
+<text style="font-size:15pt">*Anzahl der Stunden bilden u.a. auch die der Teilzeitbeschäftigten ab + abzgl. individuelle Ausfälle aufgrund von Krankheit o.ä*</text>
+
+## Die innere Perspektive
+
+<br>
 
 :::: {.columns}
 
-::: {.column width="40%"}
-<text style="color:#003f5c">**10,6 Stunden,d.h. weniger als 600 Stunden p.a.**</text><br><br>
-<text style="color:#bc5090">**12,6 Stunden, d.h. weniger als 700 Stunden p.a. **</text><br>
-<br><text>Auffallend ist hier, dass ....<text>
-
-:::
-
-::: {.column width="60%"}
+:::{.column width=60%}
 
 ```{python}
 # Import Data for Hours Worked
@@ -351,8 +344,8 @@ boxplot = alt.Chart(df2_selectedlocations).mark_boxplot(size=50, extent=0.5).enc
         tickColor='black'),
     color=alt.Color('SUBJECT', scale=colors2, legend=None),
 ).properties(
-    width=450,
-    height=400,
+    width=500,
+    height=450,
     title=alt.Title(
         "Hours needed to exit poverty",
         subtitle="in relation to family status",
@@ -383,23 +376,70 @@ boxplot_final
 
 :::
 
+:::{.column width=40%}
+<div style="font-size:25pt">
+<text style="color:#003f5c">10,6 Stunden,d.h. weniger als **600 Stunden p.a.**</text><br><br>
+<text style="color:#bc5090">12,6 Stunden, d.h. weniger als **700 Stunden p.a.**</text>
+</div>
+
+:::
+
 ::::
 
-## Was bedeutet das in unserem Firmenkontext? 
-
-Zusammenhang!
-
-* Um"dichten" zu ActionTitle mit Aussage!
+## Zusammenhang im Firmenkontext
+<br>
 
 :::: {.columns}
 
-::: {.column width="60%"}
-- aktuelle **5-Tages-Arbeitswoche**: 40h Arbeitszeit pro Woche
-- ein Geschäftsjahr bringt **52 Arbeitswochen**, also **210 Werktage** exkl. Feiertage und individuellem Urlaubsanspruch
+:::{.column width=60%}
+
+```{python}
+# Pfad zum df angeben
+merged_df = pd.read_csv("/Users/Lea/Desktop/dst-projekt/merged_df.csv")
+
+color_scale = alt.Scale(domain=['2 CHILDREN', 'NO CHILDREN'],
+                        range=['#003f5c','#bc5090'])
+
+#Scatterplot Code 
+
+scatterplot_base = alt.Chart(merged_df).mark_circle(filled=True, size=100).encode(
+    x=alt.X('Hours_needed:Q').axis(
+        titleAnchor='start',
+        grid=False),
+    y=alt.Y('Hours_worked:Q').scale(bins=[0,500,1000,1500,2000],domain=[0,2000]).axis(
+        grid=False),
+    color=alt.Color('SUBJECT1', scale=color_scale, legend=None),
+    tooltip=['SUBJECT1','Hours_needed','Hours_worked']
+).properties(
+    width=500,
+    height=450
+)
+
+scatterplot_final = alt.layer(scatterplot_base).configure_view(
+    strokeWidth=0
+).configure_axis(
+    labelFontSize = 11,
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+scatterplot_final
+
+```
+
 :::
 
-::: {.column width="40%"}
-- Vollzeitbeschäftigte kommen damit also auf **ca. 1.680h pro Jahr**
+::: {.column width=40%}
+
+<div style="font-size: 20pt">
+- Gesundes Verhältnis zwischen den jährlich benötigten Stunden und der tatsächlich geleisteten Arbeitsstunden
+- Bestätigt den aktuellen Arbeitsmodus
+- Beschäftige <text style="color:#003f5c">**mit zwei Kindern**</text><text> und</text><text style="color:#bc5090"> **ohne Kind**</text><text> bei durchschnittlichen Lohn in unserem Unternehmen gut da stehen.</text>
+</div>
 
 :::
 
@@ -444,7 +484,7 @@ europe_line_labels = alt.Chart(europe).mark_text(align='left', dx=3).encode(
     alt.Text('LOCATION:N'),
     color=alt.value('grey')
 ).properties(
-    width=700,
+    width=750,
     height=450   
 )
 
@@ -469,27 +509,12 @@ europe_linechart_final
 ```
 
 
-## steigende Produktivität: GDP X {.unlisted}
-
-*Headline in entsprechender Farbe einfärben, ggf. Wert vor UK & GER Label schreiben?
-
-. . . 
+## steigender Produktivitätstrend
+<br>
 
 :::: {.columns}
 
-::: {.column width="50%"}
-
-<text style="color:#ff6361">GDP 1,05</text><br>
-
-:::
-
-::: {.column width="50%"}
-<text style="color:#ffa600">GDP 1,02</text>
-:::
-
-::::
-
-
+::: {.column width="90%"}
 ```{python}
 colors_linechart3 = alt.Scale(
     range=['#ffa600','#ff6361']
@@ -518,7 +543,7 @@ linechart3_labels = alt.Chart(df3_selectedlocations).mark_text(align='left', dx=
     alt.Text('LOCATION'),
     alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
 ).properties(
-    width=700,
+    width=750,
     height=450,    
 )
 
@@ -538,12 +563,22 @@ linechart3_final
 
 ```
 
+:::
+
+::: {.column width="10%"}
+<div style="font-size:20pt">
+<text style="color:#ff6361">BIP 1,05</text><br>
+<text style="color:#ffa600">BIP 1,02</text>
+</div>
+:::
+
+::::
 
 ## Implikationen
-*noch nicht so smooth*
+
 <div>
-- **Ausgangslage:** Anzahl der Arbeitsstunden über die letzten Jahre:
-- **Perspektive der Mitarbeiter:** Mindestanzahl an Arbeitsstunden: 
+- **Ausgangslage:** Anzahl der Arbeitsstunden über die letzten Jahre
+- **Perspektive der Beschäftigten:** Mindestanzahl an Arbeitsstunden
 - **Produktivitätstrends:** stetige Wachstumstendenz
 </div>
 
@@ -558,41 +593,33 @@ linechart3_final
 ::: {.column}
 <div style="font-size:25pt">
 - Nach konjunkturarmen 2020 erholt sich die Wirtschaft und damit auch die Arbeitsproduktivität
-- Momentaufnahme: 2023 war ein starkes Jahr
+- Daten bestätigen Erfolg des aktuellen Arbeitsmodus
 </div>
 
 :::
 
 ::: {.column}
 <div style="font-size:25pt">
-- New Work Konzepte werden immer relevanter
 - Mitarbeiter stehen im Fokus und sollen weiterhin an das Unternehmen gebunden werden
+- 4-Tage-Woche birgt Risiken, aber auch **Chancen**
 </div>
 
 ::: 
 
 ::::
 
-Bei einer **4-Tages-Woche** wären es dagegen **ca. 1.470h im Jahr**
-
 ## Handlungsempfehlung
-### Datenerhebung innerhalb eines Piloten
 
-**Eine 4-Tage Woche triggert möglicherweise Veränderungen, die Folgen haben**
-*Tonspur Auf Basis des Daten und deren Auswertung schlage ich folgendes vor:*
-*Wie kann Vorhaben/Hypothese umgesetzt werden?*
-
-<div style="font-size:28pt">
-- Kompromisse eingehen: 4 Tage Woche sehr starke Maßnahme, um diese Brücke zwischen Arbeitsproduktivität und Work-Life-Balance zu gehen
-- Studien zeigen womöglich Steigerung der Produktivität trotz geringere Stundenwoche
-- UK als Vorreiter <br>
+<div style="font-size:25pt">
+- Arbeitsmodus innerhalb der 4-Tage-Woche (4x8h à 32h/Woche): **ca. 1.470h im Jahr**
+- Studien zeigen womöglich Steigerung der Produktivität trotz geringere Stundenwoche & UK gilt als Vorreiter 
+- Umstellung triggert möglicherweise Veränderungen, die weitgehende Folgen haben
+- Kompromisse eingehen: Mitarbeiter an Unternehmen binden und verschiedene Konzepte erproben wie z.B. auch 4x10 à 40h/Woche
 </div>
-
 
 . . .
 
 <text style="color:#004aad">**Das Konzept der 4-Tage-Woche gilt es in geeignetem Rahmen und Zeitpunkt zu pilotieren, um Auswirkungen im Unternehmen messbar zu machen**</text>
-- Verschiedene Konzepte wie 4x8h also 32h/Woche oder 4x10 also nach wie vor 40h/Woche
 
 ## {background-color="#004aad"} 
 
