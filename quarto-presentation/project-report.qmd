@@ -1,0 +1,11 @@
+---
+title: "Firmeninterne Arbeitsproduktivität "
+subtitle: "Chancen hinsichtlich des Arbeitsmodus auf der Grundlage von VIsionaryZ Firmendaten"
+author: "Lea Frech"
+execute: 
+    eval: true
+lang: de
+format: 
+---
+
+# 
