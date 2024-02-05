@@ -1,11 +1,99 @@
 ---
 title: "Firmeninterne Arbeitsproduktivität "
 subtitle: "Chancen hinsichtlich des Arbeitsmodus auf der Grundlage von VIsionaryZ Firmendaten"
-author: "Lea Frech"
 execute: 
     eval: true
 lang: de
-format: 
+format: html
+toc: true
+toc-title: "**In diesem Report**"
+theme: [default,style.scss]
 ---
 
-# 
+## Anlass der Präsentation
+
+::: {.panel-tabset}
+## Ausgangssituation
+
+- Kollegen im HQ in UK stellen derzeit Überlegungen zur Anpassungen des Arbeitsmodus an die 4-Tages-Woche an
+- Seit Eröffnung des zweiten Standorts in Deutschland, gilt es interne Daten zu beleuchten und - auch vergleichend zu den Kollegen in UK, Verbesserungen vorzunehmen
+
+<a href="https://www.tagesschau.de/wirtschaft/vier-tage-woche-102.html">Bezug zur Aktualität</a>
+
+## Kennzahlen
+
+- aktuelle **5-Tages-Arbeitswoche**: 40h Arbeitszeit pro Woche
+- ein Geschäftsjahr bringt **52 Arbeitswochen**, also **210 Werktage** exkl. Feiertage und individuellem Urlaubsanspruch
+- Vollzeitbeschäftigte kommen damit also auf **ca. 1.680h pro Jahr**
+
+:::
+
+Grund für meine Beschäftigng zu dem Thema sind aktuelle Entwicklungen und Trends hinsichtlich der 4-Tages-Woche. UK gilt zudem als Vorreiter für 4-Tage-Woche und mehrere Studien zeigen eine positive Entwicklung in diesem Kontext. Deshalb häufen sich aktuell die Gespräche und Hypothesen zum Thema und Chancen für unseren Arbeitsmodus.
+Deshalb möchte ich einen Ausblick geben und einfach mal die Frage stellen: *Was wäre, wenn...?* 
+
+
+## Geleistete Stunden in vergangenen Geschäftsjahren
+
+::: {.panel-tabset}
+# Chart
+Barchart1
+
+# Daten
+Dataframe
+
+:::
+
+::: {.panel-tabset}
+## Das Jahr 2020
+
+linechart1
+
+
+
+## Jahr 2021-2023
+linechart 2
+
+:::
+
+## Interne Perspektive
+**Aus dem Blick unserer Beschäftigten**
+
+boxplot
+
+#### Implikationen
+scatterplot
+
+## Prognose der Arbeitsproduktivität
+
+::: {.panel-tabset}
+# Chart
+
+linechart 3
+
+# Daten
+
+Dataframe
+
+:::
+
+## Implikationen für unser Unternehmen
+
+Hinsichtlich der Implikationen die Daten Revue passieren lassen:
+Status quo abgebildet durch geleistete Arbeitsstunden
+Perspektive der Mitarbeiter:innen durch Mindestanzahl an Stunden
+allg. Arbeitsproduktivitätstrend
+Wie gestalten wir 2024: Wirtschaftskurve also BIP steigt -> vermeintlich auch Produktivitätstrend
+aktueller Arbeitsmodus passt, aber hinsichtlich 4 Tage Woche werden auch Chancen geboten
+Was können wir dahingehend noch besser machen?
+
+## Fazit
+
+Davon abgeleitet: Handlungsempfehlungen
+4-Tage-Woche bedeutet konkret 1470h/Jahr (wie erwähnt bedingt durch Abzüge)
+Umstellung triggert Veränderung, die aber auch positiv sein kann -> Studien bestärken Effekt von Konzept & UK als Vorreiter Land
+Deshalb Empfehlung: Kollegen in UK bestärken und zum Pilotieren im geeignetem Rahmen raten und dadurch Auswirkungen im Unternehmensumfeld messbar machen und genauere Daten zu erheben
+
+
+
+
+
