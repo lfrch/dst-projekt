@@ -7,6 +7,9 @@ lang: de
 format: html
 toc: true
 toc-title: "**In diesem Report**"
+embed-resources: true
+code-copy: true
+code-line-numbers: true
 theme: [default,style.scss]
 ---
 
@@ -34,45 +37,499 @@ Deshalb möchte ich einen Ausblick geben und einfach mal die Frage stellen: *Was
 
 ## Geleistete Stunden in vergangenen Geschäftsjahren
 
+```{python}
+# | echo: false
+import pandas as pd
+import altair as alt
+
+# Farbskala
+colors = alt.Scale(
+    range=['#003f5c','#58508d','#bc5090','#ff6361','#ffa600']
+)
+
+# Import Data for Hours Worked
+LINK1 = '/Users/Lea/Desktop/dst-projekt/df_selectedlocations.csv'
+df_selectedlocations = pd.read_csv(LINK1)
+```
+
 ::: {.panel-tabset}
 # Chart
-Barchart1
+
+```{python}
+# | echo: false
+barchart1 = alt.Chart(df_selectedlocations).mark_bar().encode(
+    x=alt.X('VALUE', scale=alt.Scale(bins=[0,1000,2000,3000,4000,5000,6000,7000])).axis(
+        title='Hours',
+        titleAnchor='start',
+        grid=False,
+        labelColor='black',
+        tickColor='grey'),
+    y=alt.Y('LOCATION').axis(
+        title='Location',
+        titleAnchor='middle',
+        titleAngle=-90,
+        labelAngle= 0,
+        grid=False,
+        labelColor='black',
+        tickColor='black'),
+    color=alt.Color('TIME:O', scale=colors, legend=alt.Legend(
+        orient='none',
+        legendX=0, legendY=-50,
+        direction='horizontal',
+        title='Year',
+        titleFontSize=12,
+        labelFontSize=12,
+        titleAnchor='start')),
+    tooltip=["VALUE"]
+).properties(
+    width=600,
+    height=400,
+    )
+
+barchart1_labels = alt.Chart(df_selectedlocations).mark_text(baseline='middle', color='black').encode(
+    x=alt.X('VALUE'),
+    y=alt.Y('LOCATION')  
+)
+
+
+
+barchart1_final = alt.layer(barchart1,barchart1_labels).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=20,
+    anchor='middle',
+    fontWeight='bold',
+).configure_axis(
+    labelFontSize = 11,
+    labelFontWeight='bold',
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+# | echo: true
+barchart1_final
+
+```
+
 
 # Daten
-Dataframe
+Ein Überblick der zugrundeliegenden Daten:
+
+```{python}
+# | echo: false
+df_selectedlocations
+```
 
 :::
 
 ::: {.panel-tabset}
 ## Das Jahr 2020
 
-linechart1
+```{python}
+# | echo: false
+colors_linechart1 = alt.Scale(
+    range=['#ffa600','#ff6361','grey','grey']
+)
+
+#Linechart
+linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
+    x=alt.X('TIME:O', title='Year').axis(
+        titleAnchor='start',
+        labelAngle= -0,
+        ),
+    y=alt.Y('VALUE').scale(domain=(1000,2000), bins=(1000,1300,1600,1900,2100)).axis(
+        title='Hours',
+        titleAnchor='end',
+        grid= False,
+        ),
+    strokeWidth=alt.value(4), 
+    color=alt.Color('LOCATION', scale=colors_linechart1),
+    tooltip=['VALUE']
+)
+
+# Chart 1 - Labels
+location_list = df_selectedlocations['LOCATION'].tolist()
+
+linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=5, fontSize=14).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION'),
+    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
+).properties(
+    width=600,
+    height=400,    
+)
+
+# Markers
+linechart_points = alt.Chart(df_selectedlocations).mark_point(size=70, filled=True, opacity=1).encode(
+    x=alt.X('TIME:O'),
+    y=alt.Y('VALUE'),
+    color=alt.Color('LOCATION', scale=colors_linechart1),
+    tooltip=['LOCATION','TIME','VALUE']
+)
+
+#Data Labels 
+linechart_datalabels = alt.Chart(df_selectedlocations[(df_selectedlocations['LOCATION'].isin(['United Kingdom', 'Germany'])) & (df_selectedlocations['TIME'] == 2020)]).mark_text(
+    align='left',
+    dx=5,
+    dy=10,
+    fontSize=14,
+).encode(
+    x=alt.X('TIME:O'),
+    y=alt.Y('VALUE'),
+    text= ('VALUE'),
+    color=alt.Color('LOCATION', scale=colors_linechart1)
+)
+
+# Chart 1 - Final Viz
+linechart1_final = alt.layer(linechart1, linechart_labels,linechart_points, linechart_datalabels).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=25,
+    anchor='start',
+    fontWeight='bold',
+).configure_axis(
+    labelFontSize = 11,
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+# | echo: true
+linechart1_final
+
+```
 
 
 
 ## Jahr 2021-2023
-linechart 2
+
+```{python}
+# | echo: false
+linechart1 = alt.Chart(df_selectedlocations).mark_line().encode(
+    x=alt.X('TIME:O', title='Year').axis(
+        titleAnchor='start',
+        labelAngle= -0,
+        ),
+    y=alt.Y('VALUE').scale(domain=(1000,2000), bins=(1000,1300,1600,1900,2100)).axis(
+        title='Hours',
+        titleAnchor='end',
+        grid= False,
+        ),
+    strokeWidth=alt.value(4), 
+    color=alt.Color('LOCATION', scale=colors_linechart1),
+    tooltip=['LOCATION','VALUE']
+)
+
+# Chart 1 - Labels
+location_list = df_selectedlocations['LOCATION'].tolist()
+
+linechart_labels = alt.Chart(df_selectedlocations).mark_text(align='left', dx=5, fontSize=14).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION'),
+    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
+).properties(
+    width=600,
+    height=400,    
+)
+
+# Markers
+linechart_points = alt.Chart(df_selectedlocations).mark_point(size=70, filled=True, opacity=1).encode(
+    x=alt.X('TIME:O'),
+    y=alt.Y('VALUE'),
+    color=alt.Color('LOCATION', scale=colors_linechart1),
+    tooltip=['LOCATION','TIME','VALUE']
+)
+
+#Data Labels 
+linechart_datalabels = alt.Chart(df_selectedlocations[(df_selectedlocations['LOCATION'].isin(['United Kingdom', 'Germany'])) & (df_selectedlocations['TIME'] == 2022)]).mark_text(
+    align='left',
+    dx=-8,
+    dy=20,
+    fontSize=14,
+).encode(
+    x=alt.X('TIME:O'),
+    y=alt.Y('VALUE'),
+    text= ('VALUE'),
+    color=alt.Color('LOCATION', scale=colors_linechart1)
+)
+
+
+
+# Chart 1 - Final Viz
+linechart2_final = alt.layer(linechart1, linechart_labels,linechart_points, linechart_datalabels).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=25,
+    anchor='start',
+    fontWeight='bold',
+).configure_axis(
+    labelFontSize = 11,
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+# | echo: true
+linechart2_final
+
+```
 
 :::
 
 ## Interne Perspektive
 **Aus dem Blick unserer Beschäftigten**
 
-boxplot
+::: {.panel-tabset}
+## Chart
+
+```{python}
+# | echo: false
+LINK2 = '/Users/Lea/Desktop/dst-projekt/df2_selectedlocations.csv'
+df2_selectedlocations = pd.read_csv(LINK2)
+
+# Code Scale for Exit Poverty
+colors2 = alt.Scale(
+    range=['#003f5c','#bc5090']
+)
+
+boxplot = alt.Chart(df2_selectedlocations).mark_boxplot(size=50, extent=0.5).encode(
+    x=alt.X('SUBJECT').axis(
+        title=None,
+        labelAngle=0,
+        grid=False,
+        labelColor='black',
+        tickColor='grey'),
+    y=alt.Y('VALUE:Q', scale=alt.Scale(bins=[0,2,4,6,8,10,12,14,16,18],domain=(0,20))).axis(
+        titleAnchor='start',
+        grid=False,
+        labelColor='black',
+        tickColor='black'),
+    color=alt.Color('SUBJECT', scale=colors2, legend=None),
+).properties(
+    width=500,
+    height=450,
+    title=alt.Title(
+        "Hours needed to exit poverty",
+        subtitle="in relation to family status",
+    )
+)
+
+boxplot_final = alt.layer(boxplot).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=20,
+    anchor='middle',
+    fontWeight='bold',
+).configure_axis(
+    labelFontSize = 11,
+    labelFontWeight='bold',
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+# | echo: true
+boxplot_final
+
+```
+
+## Daten
+
+```{python}
+# | echo: false
+#df2_selectedlocations.describe('SUBJECT').astype(int)
+#df2_selectedlocations.describe().filter(items=['SUBJECT','VALUE']).astype(int)
+# | echo: false
+df2_selectedlocations.groupby('SUBJECT')['VALUE'].describe().astype(int)
+
+```
+
+:::
 
 #### Implikationen
-scatterplot
+```{python}
+# | echo: false
+merged_df = pd.read_csv("/Users/Lea/Desktop/dst-projekt/merged_df.csv")
+
+color_scale = alt.Scale(domain=['2 CHILDREN', 'NO CHILDREN'],
+                        range=['#003f5c','#bc5090'])
+
+#Scatterplot Code 
+
+scatterplot_base = alt.Chart(merged_df).mark_circle(filled=True, size=100).encode(
+    x=alt.X('Hours_needed:Q').axis(
+        titleAnchor='start',
+        grid=False),
+    y=alt.Y('Hours_worked:Q').scale(bins=[0,500,1000,1500,2000],domain=[0,2000]).axis(
+        grid=False),
+    color=alt.Color('SUBJECT1', scale=color_scale, legend=None),
+    tooltip=['SUBJECT1','Hours_needed','Hours_worked']
+).properties(
+    width=500,
+    height=450
+)
+
+scatterplot_final = alt.layer(scatterplot_base).configure_view(
+    strokeWidth=0
+).configure_axis(
+    labelFontSize = 11,
+    titleFontSize = 12,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 12
+)
+
+# | echo: true
+scatterplot_final
+
+```
 
 ## Prognose der Arbeitsproduktivität
+
+```{python}
+# | echo: false
+LINK3 = '/Users/Lea/Desktop/dst-projekt/df3_selectedlocations.csv'
+df3_selectedlocations = pd.read_csv(LINK3)
+
+LINK4 = '/Users/Lea/Desktop/dst-projekt/europe_forecast.csv'
+europe = pd.read_csv(LINK4)
+```
 
 ::: {.panel-tabset}
 # Chart
 
-linechart 3
+```{python}
+# | echo: false
+colors_linechart3 = alt.Scale(
+    range=['#ffa600','#ff6361']
+)
+
+europe_linechart = alt.Chart(europe).mark_line(strokeDash=[5, 5]).encode(
+    x=alt.X('TIME:O', title='Year').axis(
+        titleAnchor='start',
+        labelAngle= -0,
+        ),
+    y=alt.Y('VALUE').scale(domain=(0.85,1.08)).axis(
+        title='GDP per hour worked',
+        titleAnchor='end',
+        grid= False,
+        ),
+    strokeWidth=alt.value(3),
+    color=alt.value('grey'),
+    tooltip=['LOCATION','TIME','VALUE']
+)
+
+europe_list = europe['LOCATION'].tolist()
+
+europe_line_labels = alt.Chart(europe).mark_text(align='left', dx=3).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION:N'),
+    color=alt.value('grey')
+).properties(
+    width=700,
+    height=400   
+)
+
+europe_linechart_final = alt.layer( europe_linechart, europe_line_labels).configure_view(
+    strokeWidth=0
+).configure_title(
+    fontSize=20,
+    anchor='middle',
+    fontWeight='bold',
+).configure_axis(
+    labelFontSize = 12,
+    titleFontSize = 14,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 14
+)
+
+linechart3 = alt.Chart(df3_selectedlocations).mark_line().encode(
+    x=alt.X('TIME:O', title='Year').axis(
+        titleAnchor='start',
+        labelAngle= -0,
+        ),
+    y=alt.Y('VALUE').scale(domain=(0.85,1.08)).axis(
+        title='GDP per hour worked',
+        titleAnchor='end',
+        grid= False,
+        ),
+    strokeWidth=alt.value(3), 
+    color=alt.Color('LOCATION', scale=colors_linechart3),
+    tooltip=['LOCATION','TIME','VALUE']
+)
+
+location_list = df3_selectedlocations['LOCATION'].tolist()
+
+linechart3_labels = alt.Chart(df3_selectedlocations).mark_text(align='left', dx=3).encode(
+    alt.X('TIME:O', aggregate='max'),
+    alt.Y('VALUE:Q', aggregate={'argmax': 'VALUE'}),
+    alt.Text('LOCATION'),
+    alt.Color('LOCATION:N', legend=None, scale=alt.Scale(domain=location_list,type='ordinal')), 
+).properties(
+    width=700,
+    height=400,    
+)
+
+# Vertical Line marker
+linechart3_rule = alt.Chart(df3_selectedlocations).mark_rule(color='lightgrey').encode(
+    x=alt.X('TIME:O'),
+    y=alt.value(0),
+    opacity=alt.condition(alt.datum.TIME == 2009, alt.value(1), alt.value(0))
+)
+
+linechart3_rule2 = alt.Chart(df3_selectedlocations).mark_rule(color='lightgrey').encode(
+    x=alt.X('TIME:O'),
+    y=alt.value(0),
+    opacity=alt.condition(alt.datum.TIME == 2020, alt.value(1), alt.value(0))
+)
+
+
+linechart3_final = alt.layer(linechart3, linechart3_labels, linechart3_rule, linechart3_rule2, europe_linechart, europe_line_labels).configure_view(
+    strokeWidth=0,
+).configure_axis(
+    labelFontSize = 12,
+    titleFontSize = 14,
+    titleFontWeight= 'normal',
+    titleColor='grey'
+).configure_text(
+    fontWeight='bold',
+    fontSize = 14
+)
+
+# | echo: true
+linechart3_final
+
+```
 
 # Daten
 
-Dataframe
+Die Spalte VALUE entspricht hier dem gemessenen Bruttoinlandsprodukt je Land nach Erhebungsjahr im Zeithorizont 2000-2023 und einer Prognose für das derzeitige Kalenderjahr 2024.
+
+```{python}
+# | echo: false
+df3_selectedlocations
+```
 
 :::
 
