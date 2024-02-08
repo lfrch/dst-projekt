@@ -1,6 +1,7 @@
 ---
 title: "Firmeninterne Arbeitsproduktivität "
 subtitle: "Chancen hinsichtlich des Arbeitsmodus auf der Grundlage von VIsionaryZ Firmendaten"
+author: Lea Frech
 execute: 
     eval: true
 lang: de
@@ -13,21 +14,28 @@ code-line-numbers: true
 theme: [default,style.scss]
 ---
 
+<text style="color: grey">*Data Report des wöchentlichen Jours Fixe vom 28.01.24*</text>
+
 ## Anlass der Präsentation
 
 ::: {.panel-tabset}
 ## Ausgangssituation
 
-- Kollegen im HQ in UK stellen derzeit Überlegungen zur Anpassungen des Arbeitsmodus an die 4-Tages-Woche an
-- Seit Eröffnung des zweiten Standorts in Deutschland, gilt es interne Daten zu beleuchten und - auch vergleichend zu den Kollegen in UK, Verbesserungen vorzunehmen
+In diesem Report möchte ich einen detaillierten Blick auf die Arbeitszeitgestaltung und Produktivität unseres Unternehmens <text style="color:#003f5c">**VIsionaryZ**</text> werfen, insbesondere vor dem Hintergrund des aktuellen Trends hin zur **4-Tage-Woche**, der in Großbritannien bereits Fahrt aufgenommen hat. 
+Anlässlich unseres 5-jährigen Jubiläums des Firmenstandort in Deutschland und den andauernden Überlegungen, die unsere Kollegen am Hauptstandort in Großbritannien bereits angestellt haben.
 
-<a href="https://www.tagesschau.de/wirtschaft/vier-tage-woche-102.html">Bezug zur Aktualität</a>
+<a href="https://www.tagesschau.de/wirtschaft/vier-tage-woche-102.html">**Hier**</a> mehr zu aktuellen Themen in diesem Kontext.
 
 ## Kennzahlen
 
-- aktuelle **5-Tages-Arbeitswoche**: 40h Arbeitszeit pro Woche
-- ein Geschäftsjahr bringt **52 Arbeitswochen**, also **210 Werktage** exkl. Feiertage und individuellem Urlaubsanspruch
-- Vollzeitbeschäftigte kommen damit also auf **ca. 1.680h pro Jahr**
+Um an erster Stelle meine folgenden Erkenntnisse in ein Verhältnis zu bringen, ein paar Eckdaten zum Status Quo.
+Um dafür eine Basis zu schaffen, betrachten wir zunächst unseren aktuellen im <text style="color:#003f5c">**VIsionaryZ Kosmos**</text> gelebten Arbeitsmodus: 
+
+- Mitarbeiterinnen und Mitarbeiter arbeiten derzeit **fünf Tage pro Woche** für jeweils **8 Stunden**
+- Das summiert sich innerhalb eines Geschäftsjahres auf eine Anzahl von **210 Werktagen** 
+- Damit kann man von ca. **1680 Arbeitsstunden für Vollzeitbeschäftigte pro Jahr** ausgehen.
+
+> Die **durchschnittliche Jahresarbeitszeit** ist definiert als die **Gesamtzahl der tatsächlich geleisteten Arbeitsstunden pro Jahr**. Die tatsächlich geleisteten Arbeitsstunden umfassen die reguläre Arbeitszeit von Vollzeit-, Teilzeit- und geringfügig beschäftigten Arbeitnehmern und schließen die Zeit aus, die aufgrund von Feiertagen, bezahltem Jahresurlaub, eigener Krankheit und sonstigen anderen Gründen nicht geleistet wurde.
 
 :::
 
@@ -35,7 +43,7 @@ Grund für meine Beschäftigng zu dem Thema sind aktuelle Entwicklungen und Tren
 Deshalb möchte ich einen Ausblick geben und einfach mal die Frage stellen: *Was wäre, wenn...?* 
 
 
-## Geleistete Stunden in vergangenen Geschäftsjahren
+## Arbeitsstunden der vergangenen Geschäftsjahre
 
 ```{python}
 # | echo: false
@@ -80,7 +88,7 @@ barchart1 = alt.Chart(df_selectedlocations).mark_bar().encode(
         titleFontSize=12,
         labelFontSize=12,
         titleAnchor='start')),
-    tooltip=["VALUE"]
+    tooltip=["TIME","VALUE"]
 ).properties(
     width=600,
     height=400,
@@ -115,6 +123,13 @@ barchart1_final
 
 ```
 
+Anhand der Visualisierung, kann man erkennen, welche Jahre innerhalb der letzten fünf Jahre eine höhere Produktivität aufweisen. Produktivität meint hier die Anzahl der geleisteten Arbeitsstunden.
+Die Daten der OECD und Europäischen Union, die hier zum Vergleich unserer beiden Standorte herangezogen wurden, liegen hier in einem zu erwartenden Ranking. 
+
+Auch das Resultat unserer Firmenstandorte erscheint auf den ersten Blick ausgeglichen. Hier gilt es allerdings noch mehr ins Detail zu gehen und noch tiefer in den Verlauf der Daten zu schauen, um ggf. Delta und Auffälligkeiten herauszustellen, die für den Kontext relevant sind.
+
+<text style="color: grey">OECD: Organisation für wirtschaftliche Zusammenarbeit und Entwicklung. 
+Hier dient es als ein zur Gesamtheit der Länder repräsentativer Zusammenschluss</text>
 
 # Daten
 Ein Überblick der zugrundeliegenden Daten:
@@ -128,6 +143,9 @@ df_selectedlocations
 
 ::: {.panel-tabset}
 ## Das Jahr 2020
+
+Das Visualisierung gestattet nun eine deutlichere Einsicht in die Daten. 
+Beachtet man die Anzahl der gearbeiteten Stunden von 2019 bis 2022 lässt sich einen **deutlichen Rückgang der Arbeitsstunden** erkennen. Das Jahr 2020 verzeichnete durch die *COVID-19-Pandemie* bedingte, zwingende Umstrukturierung in das Hybride und steigenden Arbeitsausfällen durch Krankheit ein deutliches Einbußen des Regelbetriebs und damit auch der Arbeitsproduktivität.
 
 ```{python}
 # | echo: false
@@ -207,9 +225,18 @@ linechart1_final
 
 ```
 
-
+Der Rückgang der Arbeitsstunden im Hauptstandort <text style="color: #ff6361">**UK**</text> war in diesem Fall noch deutlicher mit einem Delta von<text style="color: #ff6361"> **173 Stunden**</text>.<br>
+Das Delta hier in <text style="color: #ffa600">**Deutschland**</text> belief sich auf <text style="color: #ffa600">**53 Stunden**</text>.
 
 ## Jahr 2021-2023
+
+Seitdem ist jedoch ein **stetiger Anstieg** zu verzeichnen, wobei das Jahr 2022 im dargestellten Zeitraum einen Zustand erreichte, der nach der Pandemie wirtschatliche Erholung vermuten lässt. 
+
+<text style="color: #ff6361">**In UK sind es demnach 1530 Arbeitsstunden gewesen.**</text><br>
+<text style="color: #ffa600">**In Deutschland waren es dagegen 1340 Arbeitsstunden.**</text>
+
+
+> Die wesentliche Differenz der Stunden unserer beiden Standorte sind auf kulturelle Unterschiede und andere Faktoren wie tarifliche Bedinungen und Beschäftigungsverhältnisse zurückzuführen.
 
 ```{python}
 # | echo: false
@@ -291,6 +318,8 @@ linechart2_final
 ## Interne Perspektive
 **Aus dem Blick unserer Beschäftigten**
 
+Wir betrachten die Arbeitsstunden je nach Familienstand der Mitarbeiter:innen.
+
 ::: {.panel-tabset}
 ## Chart
 
@@ -348,6 +377,11 @@ boxplot_final
 
 ```
 
+<text style="color:#003f5c">Beschäftigte mit zwei Kindern sollten durchschnittlich 10,6 Stunden, d.h. **weniger als 600 Stunden im Jahr leisten.**</text><br>
+<text style="color:#bc5090">Kinderlose Beschäftigte sollten dagegen im Durchschnitt 12,6 Stunden, also **etwa 700 Stunden pro Jahr** leisten.</text>
+
+> Die Mindestanzahl an Arbeitsstunden meint hier die benötigte Stundenanzahl für Beschäftigte, aufgeschlüsselt nach kinderlos und Beschäfigte mit zwei Kindern, um ihre Grundbedarfe zu decken. Dies bietet in unserem Unternehmen nicht die Basis, sondern stellt lediglich die Untergrenze und damit eine Orientierung dar.
+
 ## Daten
 
 ```{python}
@@ -361,7 +395,11 @@ df2_selectedlocations.groupby('SUBJECT')['VALUE'].describe().astype(int)
 
 :::
 
-#### Implikationen
+#### **Implikationen**
+
+Im Kontext unseres Unternehmens, VisionaryZ, zeigt sich ein gutes Verhältnis zwischen den tatsächlich gearbeiteten Stunden und den ermittelten Mindeststunden. 
+Grundsätzlich lässt sich sagen, dass mit zunehmender Anzahl an geleisteter Arbeitsstunden, die benötigte Stundenanzahl sinkt.
+Dies bestärkt unser Engagement, unsere Beschäftigten bei *VIsionaryZ* stets in den Fokus zu stellen und weiterhin an unser Unternehmen zu binden. Zudem bestätigt diese Tatsache den grundsätzichen Erfolg des aktuellen Arbeitsmodus, weißt aber auch auf Optimierungspotentiale hin.
 ```{python}
 # | echo: false
 merged_df = pd.read_csv("/Users/Lea/Desktop/dst-projekt/merged_df.csv")
@@ -372,13 +410,20 @@ color_scale = alt.Scale(domain=['2 CHILDREN', 'NO CHILDREN'],
 #Scatterplot Code 
 
 scatterplot_base = alt.Chart(merged_df).mark_circle(filled=True, size=100).encode(
-    x=alt.X('Hours_needed:Q').axis(
+    x=alt.X('Hours_worked:Q').axis(
         titleAnchor='start',
         grid=False),
-    y=alt.Y('Hours_worked:Q').scale(bins=[0,500,1000,1500,2000],domain=[0,2000]).axis(
+    y=alt.Y('Hours_needed:Q').scale(bins=[0,500,1000,1500,2000],domain=[0,2000]).axis(
         grid=False),
-    color=alt.Color('SUBJECT1', scale=color_scale, legend=None),
-    tooltip=['SUBJECT1','Hours_needed','Hours_worked']
+    color=alt.Color('SUBJECT1', scale=color_scale, legend=alt.Legend(
+        orient='none',
+        legendX=0, legendY=-50,
+        direction='horizontal',
+        title='Family Status',
+        titleFontSize=12,
+        labelFontSize=12,
+        titleAnchor='start')),
+    tooltip=['SUBJECT1','Hours_needed','Hours_worked','LOCATION']
 ).properties(
     width=500,
     height=450
@@ -398,10 +443,16 @@ scatterplot_final = alt.layer(scatterplot_base).configure_view(
 
 # | echo: true
 scatterplot_final
-
 ```
 
 ## Prognose der Arbeitsproduktivität
+
+Mit Blick auf die Entwicklung der Wirtschaft, wollte ich zudem allgemeine Produktivitätstrends werfen. 
+
+> Die Arbeitsproduktivität ist definiert als reales Bruttoinlandsprodukt (BIP) pro Arbeitsstunde. Dies erfasst den Einsatz des Arbeitsinputs besser als der Output pro Arbeitnehmer, wobei der Arbeitsinput als die Gesamtheit der von allen beteiligten Personen geleisteten Arbeitsstunden definiert ist.
+ 
+In dieser Visualisierung erkennt man deshalb den Produktivitätstrend der Wirtschaft innerhalb der letzten 23 Jahren und auch die Prognose für das nun angebrochene Geschäftsjahr.
+
 
 ```{python}
 # | echo: false
@@ -522,6 +573,11 @@ linechart3_final
 
 ```
 
+Dabei ergab sich, dass sowohl in Großbritannien als auch in Deutschland nach <text style="color: grey">wirtschaftlichen Tiefpunkten, wie im obrigen Liniendiagramm eingezeichnet</text>, eine Erholung auftrat.
+
+2024 können wir demnach wirtschaftlich eine Produktivität, bzw. ein BIP von<text style="color:#ff6361"> 1,05 in UK</text>erwarten, während in<text style="color:#ffa600"> Deutschland, ein BIP von 1,02</text>prognostiziert wird.
+In beiden Fällen kann man für die Länder der Firmenstandorte also von einem **positiven Wachstumstrend** ausgehen.
+
 # Daten
 
 Die Spalte VALUE entspricht hier dem gemessenen Bruttoinlandsprodukt je Land nach Erhebungsjahr im Zeithorizont 2000-2023 und einer Prognose für das derzeitige Kalenderjahr 2024.
@@ -543,7 +599,11 @@ Wie gestalten wir 2024: Wirtschaftskurve also BIP steigt -> vermeintlich auch Pr
 aktueller Arbeitsmodus passt, aber hinsichtlich 4 Tage Woche werden auch Chancen geboten
 Was können wir dahingehend noch besser machen?
 
+
+
 ## Fazit
+
+Die Implikationen dieser Daten legen nahe, dass unser derzeitiger Arbeitsmodus gut zur aktuellen Situation passt, aber die Einführung einer 4-Tage-Woche auch Chancen bietet. Daher empfehle ich, die Kollegen in Großbritannien zu bestärken und sie zum Pilotieren im geeigneten Rahmen zu ermutigen, um die Auswirkungen im Unternehmensumfeld messbar zu machen und genauere Daten zu erheben.
 
 Davon abgeleitet: Handlungsempfehlungen
 4-Tage-Woche bedeutet konkret 1470h/Jahr (wie erwähnt bedingt durch Abzüge)
